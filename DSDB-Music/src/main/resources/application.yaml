@@ -1,0 +1,16 @@
+# Server port
+server:
+  port: 8082
+
+spring:
+  # MongoDB
+  data:
+    mongodb:
+      host: localhost
+      port: 27017
+      database: music
+  main:
+    allow-bean-definition-overriding: true
+
+  application:
+    name: DSDB-Music

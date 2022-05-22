@@ -1,0 +1,27 @@
+# Server port
+server:
+    port: 8081
+
+spring:
+# Postgres
+    datasource:
+        url: jdbc:postgresql://localhost:5432/postgres?currentSchema=music
+        username: test1234
+        password: test1234
+    # JPA & Hibernate
+    jpa:
+        properties:
+            hibernate:
+                dialect: org.hibernate.dialect.PostgreSQLDialect
+        hibernate:
+            ddl-auto: none
+        open-in-view: true
+    # Others
+    sql:
+        init:
+            mode: always
+            continue-on-error: true
+    main:
+        allow-bean-definition-overriding: true
+    application:
+        name: DSDB-Users

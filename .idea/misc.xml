@@ -33,6 +33,7 @@
         <option value="$PROJECT_DIR$/DSDB-Users/pom.xml" />
         <option value="$PROJECT_DIR$/DSDB-AudioFeatures/pom.xml" />
         <option value="$PROJECT_DIR$/DSDB-EurekaServer/pom.xml" />
+        <option value="$PROJECT_DIR$/DSDB-Gateway/pom.xml" />
       </list>
     </option>
   </component>

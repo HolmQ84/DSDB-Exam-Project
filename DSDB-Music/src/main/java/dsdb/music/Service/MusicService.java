@@ -3,7 +3,7 @@ package dsdb.music.Service;
 import com.opencsv.CSVReader;
 import com.opencsv.CSVReaderBuilder;
 import com.opencsv.exceptions.CsvException;
-import dsdb.music.Model.Music;
+import dsdb.music.Model.Song;
 import dsdb.music.Repository.MusicRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
@@ -25,59 +25,59 @@ public class MusicService {
     @Autowired
     MusicRepository musicRepository;
 
-    public List<Music> convertCSVtoListOfMusic() {
+    public List<Song> convertCSVtoListOfMusic() {
         try{
             CSVReader reader=
                     new CSVReaderBuilder(new FileReader("C:\\Users\\marti\\IdeaProjects\\DataScience-ExamProject\\DataScience-SongManagement\\data\\cleanedDatasetWithFeatures.csv")).
                             withSkipLines(1). // Skiping firstline as it is header
                             build();
-            List<Music> musicList = reader.readAll().stream().map(data-> {
-                Music music = new Music();
-                music.setMusicId(data[0]);
-                music.setTitle(data[1]);
-                music.setRank(data[2]);
+            List<Song> songList = reader.readAll().stream().map(data-> {
+                Song song = new Song();
+                song.setSongId(data[0]);
+                song.setTitle(data[1]);
+                song.setRank(data[2]);
                 SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd");
                 try {
                     Date date = sdf1.parse(data[3]);
-                    music.setDate(date);
+                    song.setDate(date);
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
 
-                music.setArtist(data[4]);
-                music.setSpotifyUrl(data[5]);
-                music.setRegion(data[6]);
-                music.setStreams(data[7]);
-                return music;
+                song.setArtist(data[4]);
+                song.setSpotifyUrl(data[5]);
+                song.setRegion(data[6]);
+                song.setStreams(data[7]);
+                return song;
             }).collect(Collectors.toList());
-            return musicList;
+            return songList;
         } catch (IOException | CsvException e) {
             e.printStackTrace();
-            return new ArrayList<Music>();
+            return new ArrayList<Song>();
         }
     }
 
-    public int storeListOfMusicInMongoDB(List<Music> musicList) {
-        return musicRepository.saveAll(musicList).size();
+    public int storeListOfMusicInMongoDB(List<Song> songList) {
+        return musicRepository.saveAll(songList).size();
     }
 
-    public List<Music> getAllMusic() {
+    public List<Song> getAllSongs() {
         return musicRepository.findAll();
     }
 
-    public List<Music> getMusicByArtist(String artist) {
-        List<Music> music = musicRepository.findMusicByArtist(artist);
-        System.out.println(music);
-        return music;
+    public List<Song> getSongByArtist(String artist) {
+        List<Song> songs = musicRepository.findSongsByArtist(artist);
+        System.out.println(songs);
+        return songs;
     }
 
-    public Music getMusicById(int musicId) {
-        Music music = musicRepository.findMusicById(musicId);
-        System.out.println(music);
-        return music;
+    public Song getSongById(int musicId) {
+        Song song = musicRepository.findSongById(musicId);
+        System.out.println(song);
+        return song;
     }
 
-    public List<Music> getTop10SongsByRegion(String region) {
+    public List<Song> getTop10SongsByRegion(String region) {
         return musicRepository.getTop10SongsByRegion(region);
     }
 }

@@ -1,0 +1,23 @@
+# Server port
+server:
+  port: 8086
+
+spring:
+  # MongoDB
+  data:
+    mongodb:
+      host: localhost
+      port: 27017
+      database: logger
+  main:
+    allow-bean-definition-overriding: true
+
+  application:
+    name: DSDB-Logger
+
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: false
+    service-url:
+      defaultZone: http://localhost:8761/eureka

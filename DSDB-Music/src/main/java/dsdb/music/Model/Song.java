@@ -9,9 +9,9 @@ import java.util.Date;
 
 @Data
 @Document(collection = "music")
-public class Music implements Serializable {
+public class Song implements Serializable {
     @CsvBindByPosition(position = 0)
-    private int musicId;
+    private int songId;
     @CsvBindByPosition(position = 2)
     private String title;
     @CsvBindByPosition(position = 5)
@@ -27,9 +27,9 @@ public class Music implements Serializable {
     @CsvBindByPosition(position = 8)
     private int streams;
 
-    public Music(String musicId, String title, String rank, Date date, String artist, String spotifyUrl,
-                 String region, String streams) {
-        this.musicId = Integer.parseInt(musicId);
+    public Song(String songId, String title, String rank, Date date, String artist, String spotifyUrl,
+                String region, String streams) {
+        this.songId = Integer.parseInt(songId);
         this.title = title;
         this.rank = Integer.parseInt(rank);
         this.date = date;
@@ -39,15 +39,15 @@ public class Music implements Serializable {
         this.streams = (int) Double.parseDouble(streams);
     }
 
-    public Music() {
+    public Song() {
     }
 
-    public int getMusicId() {
-        return musicId;
+    public int getSongId() {
+        return songId;
     }
 
-    public void setMusicId(String musicId) {
-        this.musicId = Integer.parseInt(musicId);
+    public void setSongId(String songId) {
+        this.songId = Integer.parseInt(songId);
     }
 
     public String getTitle() {

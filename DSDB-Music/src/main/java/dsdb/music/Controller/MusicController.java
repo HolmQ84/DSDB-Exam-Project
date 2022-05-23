@@ -1,6 +1,7 @@
 package dsdb.music.Controller;
 
-import dsdb.music.Model.Music;
+import dsdb.music.Model.Song;
+import dsdb.music.Service.KafkaService;
 import dsdb.music.Service.MusicService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -10,31 +11,36 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-@RequestMapping("/music")
+@RequestMapping("/songs")
 @RestController
 public class MusicController {
 
     @Autowired
     MusicService musicService;
 
+    @Autowired
+    KafkaService kafkaService;
+
     @GetMapping("/")
-    public List<Music> getAllMusic() {
-        return musicService.getAllMusic();
+    public List<Song> getAllMusic() {
+        return musicService.getAllSongs();
     }
 
     @GetMapping("/{id}")
-    public Music getMusicById(@PathVariable int id) {
-        return musicService.getMusicById(id);
+    public Song getMusicById(@PathVariable int id) {
+        Song song = musicService.getSongById(id);
+        kafkaService.sendToMusicTopic(kafkaService.songToObject(song), "Get Request - Song By ID");
+        return song;
     }
 
     @GetMapping("/search/artist/{artist}")
-    public List<Music> getMusicByArtist(@PathVariable String artist) {
+    public List<Song> getMusicByArtist(@PathVariable String artist) {
         System.out.println(artist);
-        return musicService.getMusicByArtist(artist);
+        return musicService.getSongByArtist(artist);
     }
 
     @GetMapping("/search/region/{region}")
-    public List<Music> getTop10SongsByRegion(@PathVariable String region) {
+    public List<Song> getTop10SongsByRegion(@PathVariable String region) {
         return musicService.getTop10SongsByRegion(region);
     }
 

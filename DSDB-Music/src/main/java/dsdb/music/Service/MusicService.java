@@ -34,20 +34,20 @@ public class MusicService {
             List<Music> musicList = reader.readAll().stream().map(data-> {
                 Music music = new Music();
                 music.setMusicId(data[0]);
-                music.setTitle(data[2]);
-                music.setRank(data[3]);
+                music.setTitle(data[1]);
+                music.setRank(data[2]);
                 SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd");
                 try {
-                    Date date = sdf1.parse(data[4]);
+                    Date date = sdf1.parse(data[3]);
                     music.setDate(date);
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
 
-                music.setArtist(data[5]);
-                music.setSpotifyUrl(data[6]);
-                music.setRegion(data[7]);
-                music.setStreams(data[8]);
+                music.setArtist(data[4]);
+                music.setSpotifyUrl(data[5]);
+                music.setRegion(data[6]);
+                music.setStreams(data[7]);
                 return music;
             }).collect(Collectors.toList());
             return musicList;

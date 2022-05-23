@@ -10,7 +10,10 @@ import org.springframework.stereotype.Service;
 
 import java.io.FileReader;
 import java.io.IOException;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -77,17 +80,17 @@ public class FeatureService {
             List<AudioFeatures> musicList = reader.readAll().stream().map(data-> {
                 AudioFeatures audioFeatures = new AudioFeatures();
                 audioFeatures.setAudioId(Integer.parseInt(data[0]));
-                audioFeatures.setDanceability(Double.parseDouble(data[9]));
-                audioFeatures.setEnergy(Double.parseDouble(data[10]));
-                audioFeatures.setKey(Double.parseDouble(data[11]));
-                audioFeatures.setLoudness(Double.parseDouble(data[12]));
-                audioFeatures.setSpeechiness(Double.parseDouble(data[13]));
-                audioFeatures.setAcousticness(Double.parseDouble(data[14]));
-                audioFeatures.setInstrumentalness(Double.parseDouble(data[15]));
-                audioFeatures.setLiveness(Double.parseDouble(data[16]));
-                audioFeatures.setValence(Double.parseDouble(data[17]));
-                audioFeatures.setTempo(Double.parseDouble(data[18]));
-                audioFeatures.setDuration_ms(Double.parseDouble(data[19]));
+                audioFeatures.setDanceability(data[8]);
+                audioFeatures.setEnergy(data[9]);
+                audioFeatures.setOnKey(data[10]);
+                audioFeatures.setLoudness(data[11]);
+                audioFeatures.setSpeechiness(data[12]);
+                audioFeatures.setAcousticness(data[13]);
+                audioFeatures.setInstrumentalness(data[14]);
+                audioFeatures.setLiveness(data[15]);
+                audioFeatures.setValence(data[16]);
+                audioFeatures.setTempo(data[17]);
+                audioFeatures.setDuration_ms(data[18]);
                 return audioFeatures;
             }).collect(Collectors.toList());
             return musicList;
@@ -97,8 +100,7 @@ public class FeatureService {
         }
     }
 
-    public int storeListOfFeaturesInDB(List<AudioFeatures> musicList) {
-        return featureRepository.saveAll(musicList).size();
+    public int storeListOfFeaturesInDB(List<AudioFeatures> audioFeaturesList) {
+        return featureRepository.saveAll(audioFeaturesList).size();
     }
-
 }

@@ -1,13 +1,15 @@
 package dsdb.collaborators.Model;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
-import org.neo4j.ogm.annotation.*;
+import org.springframework.data.neo4j.core.schema.GeneratedValue;
+import org.springframework.data.neo4j.core.schema.Id;
+import org.springframework.data.neo4j.core.schema.Node;
+import org.springframework.data.neo4j.core.schema.Relationship;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@NodeEntity
+@Node("Person")
 @Data
 public class Person {
     @Id
@@ -16,25 +18,20 @@ public class Person {
 
     private String name;
 
-    @JsonIgnoreProperties({"person", "singers"})
-    @Relationship(type = "SANG")
-    private List<Role> sang = new ArrayList<>();
+    @Relationship(value = "SANG")
+    private List<Role> sang;
 
-    @JsonIgnoreProperties({"singers", "producers", "features", "collaborators"})
-    @Relationship(type = "PRODUCED")
-    private List<Song> produced = new ArrayList<>();
+    @Relationship(value = "PRODUCED")
+    private List<Song> produced;
 
-    @JsonIgnoreProperties({"singers", "writers", "features", "collaborators"})
-    @Relationship(type = "WROTE")
-    private List<Song> wrote = new ArrayList<>();
+    @Relationship(value = "WROTE")
+    private List<Song> wrote;
 
-    @JsonIgnoreProperties({"singers", "writers", "features", "collaborators"})
-    @Relationship(type = "FEATURED")
-    private List<Song> featured = new ArrayList<>();
+    @Relationship(value = "FEATURED")
+    private List<Song> featured;
 
-    @JsonIgnoreProperties({"sang", "wrote", "featured", "collaborated", "produced"})
-    @Relationship(type = "COLLABORATED")
-    private List<Person> collaborated = new ArrayList<>();
+    @Relationship(value = "COLLABORATED")
+    private List<Person> collaborated;
 
     public Person() {
     }

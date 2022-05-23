@@ -1,27 +1,24 @@
 package dsdb.collaborators.Model;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
-import org.neo4j.ogm.annotation.*;
+import org.springframework.data.neo4j.core.schema.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Data
-@RelationshipEntity(type = "SANG")
+@RelationshipProperties
 public class Role {
     @Id
     @GeneratedValue
     private Long id;
 
+    @Relationship
     private List<String> roles = new ArrayList<>();
 
-    @StartNode
-    @JsonIgnoreProperties({"sang", "produced", "wrote", "featured"})
+    @TargetNode
     private Person person;
 
-    @EndNode
-    @JsonIgnoreProperties({"sang", "collaborated", "wrote", "featured", "collaborators"})
+    @TargetNode
     private Song song;
-
 }

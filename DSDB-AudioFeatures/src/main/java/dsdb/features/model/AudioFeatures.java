@@ -12,30 +12,28 @@ import java.io.Serializable;
 public class AudioFeatures implements Serializable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @CsvBindByPosition(position = 0)
     private int audioId;
+    @CsvBindByPosition(position = 8)
+    private String danceability;
+    @CsvBindByPosition(position = 9)
+    private String energy;
     @CsvBindByPosition(position = 10)
-    private double danceability;
+    private String onKey;
     @CsvBindByPosition(position = 11)
-    private double energy;
+    private String loudness;
     @CsvBindByPosition(position = 12)
-    private double key;
+    private String speechiness;
     @CsvBindByPosition(position = 13)
-    private double loudness;
+    private String acousticness;
     @CsvBindByPosition(position = 14)
-    private double mode;
+    private String instrumentalness;
     @CsvBindByPosition(position = 15)
-    private double speechiness;
+    private String liveness;
     @CsvBindByPosition(position = 16)
-    private double acousticness;
+    private String valence;
     @CsvBindByPosition(position = 17)
-    private double instrumentalness;
+    private String tempo;
     @CsvBindByPosition(position = 18)
-    private double liveness;
-    @CsvBindByPosition(position = 19)
-    private double valence;
-    @CsvBindByPosition(position = 20)
-    private double tempo;
-    @CsvBindByPosition(position = 21)
-    private double duration_ms;
+    private String duration_ms;
 }

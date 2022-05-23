@@ -25,3 +25,10 @@ spring:
         allow-bean-definition-overriding: true
     application:
         name: DSDB-Users
+
+eureka:
+    client:
+        register-with-eureka: true
+        fetch-registry: false
+        service-url:
+            defaultZone: http://localhost:8761/eureka

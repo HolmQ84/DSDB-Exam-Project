@@ -12,13 +12,16 @@
         <module name="DSDB-Users" />
         <module name="DSDB-Music" />
         <module name="DSDB-AudioFeatures" />
+        <module name="DSDB-Collaborators" />
       </profile>
     </annotationProcessing>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="DSDB-AudioFeatures" options="-parameters" />
+      <module name="DSDB-Collaborators" options="-parameters" />
       <module name="DSDB-EurekaServer" options="-parameters" />
+      <module name="DSDB-Gateway" options="-parameters" />
       <module name="DSDB-Music" options="-parameters" />
       <module name="DSDB-Users" options="-parameters" />
     </option>

@@ -22,7 +22,7 @@ spring:
         - id: DSDB-Users
           uri: lb://dsdb-users
           predicates:
-            - Path=/users/**, /authenticate/**
+            - Path=/users/**, /login/**
         - id: DSDB-Features
           uri: lb://dsdb-features
           predicates:

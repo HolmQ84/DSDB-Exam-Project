@@ -33,7 +33,7 @@ public class MusicService {
                             build();
             List<Song> songList = reader.readAll().stream().map(data-> {
                 Song song = new Song();
-                song.setSongId(data[0]);
+                song.setMusicId(data[0]);
                 song.setTitle(data[1]);
                 song.setRank(data[2]);
                 SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd");
@@ -70,13 +70,11 @@ public class MusicService {
         return songs;
     }
 
-    public Song getSongById(int musicId) {
-        Song song = musicRepository.findSongById(musicId);
-        return song;
+    public Song getSongById(int songId) {
+        return musicRepository.findSongById(songId);
     }
 
     public List<Song> getTop10SongsByRegion(String region) {
         return musicRepository.getTop10SongsByRegion(region);
     }
 }
-

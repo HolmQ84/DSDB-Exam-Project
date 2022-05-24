@@ -1,8 +1,11 @@
 package dsdb.logger.Service;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import dsdb.logger.Model.AudioFeatures;
 import dsdb.logger.Model.Song;
 import dsdb.logger.Model.User;
+import dsdb.logger.Repository.FeatureRepository;
 import dsdb.logger.Repository.SongRepository;
 import dsdb.logger.Repository.UserRepository;
 import org.slf4j.Logger;
@@ -22,12 +25,16 @@ public class KafkaService {
     @Autowired
     UserRepository userRepository;
 
+    @Autowired
+    FeatureRepository featureRepository;
+
     private final Logger logger = LoggerFactory.getLogger(KafkaService.class);
 
     @KafkaListener(topics = "songs", groupId = "DSDB-Logger")
     public void songLoggerListener(String message) {
         try {
-            Song song = new Gson().fromJson(message, Song.class);
+            Gson gson = new GsonBuilder().setDateFormat("EEE MMM dd HH:mm:ss zzz yyyy").create();
+            Song song = gson.fromJson(message, Song.class);
             logger.info("Song added to logfile - message: " + song.getLoggerMessage());
             songRepository.save(song);
         } catch (Exception e) {
@@ -41,6 +48,17 @@ public class KafkaService {
             User user = new Gson().fromJson(message, User.class);
             logger.info("User added to logfile - message: " + user.getLoggerMessage());
             userRepository.save(user);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @KafkaListener(topics = "features", groupId = "DSDB-Logger")
+    public void featureLoggerListener(String message) {
+        try {
+            AudioFeatures features = new Gson().fromJson(message, AudioFeatures.class);
+            logger.info("Features added to logfile - message: " + features.getLoggerMessage());
+            featureRepository.save(features);
         } catch (Exception e) {
             e.printStackTrace();
         }

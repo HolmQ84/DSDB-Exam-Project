@@ -18,4 +18,5 @@ public class Song implements Serializable {
     private String region;
     private int streams;
     private String loggerMessage;
+    private Date timeStamp;
 }

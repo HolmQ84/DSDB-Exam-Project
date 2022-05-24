@@ -17,13 +17,17 @@ public class User implements Serializable {
     private String username;
     private String password;
     private String email;
+    private String userLevel;
     @OneToOne(cascade=CascadeType.ALL)
     @JoinColumn(name = "person_id", referencedColumnName = "person_id")
     private Person person;
 
-    public User(String username, String password, Person person) {
+    public User(int userId, String username, String password, String email, String userLevel, Person person) {
+        this.userId = userId;
         this.username = username;
         this.password = password;
+        this.email = email;
+        this.userLevel = userLevel;
         this.person = person;
     }
 
@@ -38,6 +42,7 @@ public class User implements Serializable {
                 ", password=" + password +
                 ", email=" + email +
                 ", person=" + person +
+                ", userLevel=" + userLevel +
                 '}';
     }
 }

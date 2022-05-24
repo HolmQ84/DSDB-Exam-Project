@@ -34,6 +34,8 @@ public class FakerUsers {
         Address address = fakerAddress.createAddress();
         person.setAddress(address);
         user.setPerson(person);
+        // Set User level
+        user.setUserLevel("User");
         return user;
     }
 }

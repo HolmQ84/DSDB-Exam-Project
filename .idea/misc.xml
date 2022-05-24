@@ -35,8 +35,8 @@
         <option value="$PROJECT_DIR$/DSDB-EurekaServer/pom.xml" />
         <option value="$PROJECT_DIR$/DSDB-Gateway/pom.xml" />
         <option value="$PROJECT_DIR$/DSDB-Collaborators/pom.xml" />
-        <option value="$PROJECT_DIR$/DSDB-Lyrics/pom.xml" />
         <option value="$PROJECT_DIR$/DSDB-Logger/pom.xml" />
+        <option value="$PROJECT_DIR$/DSDB-Lyrics/pom.xml" />
       </list>
     </option>
   </component>

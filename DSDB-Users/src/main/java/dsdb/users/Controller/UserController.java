@@ -2,12 +2,14 @@ package dsdb.users.Controller;
 
 import dsdb.users.Model.User;
 import dsdb.users.Service.FakerUsers;
+import dsdb.users.Service.KafkaService;
 import dsdb.users.Service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @RequestMapping("/users")
@@ -16,6 +18,9 @@ public class UserController {
 
     @Autowired
     UserService userService;
+
+    @Autowired
+    KafkaService kafkaService;
 
     @GetMapping("/")
     public List<User> getAllUsers() {
@@ -28,8 +33,12 @@ public class UserController {
     }
 
     @PostMapping("/")
-    public ResponseEntity<User> createUser(@RequestBody User user) {
-        return userService.createUser(user);
+    public User createUser(@RequestBody User user) {
+        User newUser = userService.createUser(user);
+        if (newUser.getUsername() != null) {
+            kafkaService.sendToUserTopic(kafkaService.userToObject(newUser), "New User");
+        }
+        return newUser;
     }
 
     @PutMapping("/{id}")

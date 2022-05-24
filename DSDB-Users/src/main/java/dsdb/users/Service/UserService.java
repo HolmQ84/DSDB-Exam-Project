@@ -10,7 +10,7 @@ import java.util.Optional;
 public interface UserService {
     List<User> getAllUsers();
     ResponseEntity<Object> getUserById(int id) throws Exception;
-    ResponseEntity<User> createUser(User user);
+    User createUser(User user);
     Optional<User> updateUser(User user, int id);
     String deleteUser(int id);
     User createTestUser(User user);

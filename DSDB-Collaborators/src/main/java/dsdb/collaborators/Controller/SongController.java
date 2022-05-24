@@ -41,9 +41,4 @@ public class SongController {
     public Optional<Song> getSong2(@PathVariable String title) {
         return songRepository.getOptionalPersonViaQuery(title);
     }
-
-    @GetMapping("/test3/{title}")
-    public Flux<Song> getSong3(@PathVariable String title) {
-        return songRepository.findByTitleContains(title);
-    }
 }

@@ -31,3 +31,7 @@ spring:
           uri: lb://dsdb-music
           predicates:
             - Path=/music/**
+        - id: DSDB-Lyrics
+            uri: lb://dsdb-lyrics
+            predicates:
+              - Path=/lyrics/**

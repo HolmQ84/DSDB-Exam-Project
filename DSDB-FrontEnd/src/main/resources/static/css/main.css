@@ -1,0 +1,28 @@
+body {
+    text-align: center !important;
+    background-image: url("../img/background.jpg") !important;
+    background-repeat: no-repeat !important;
+    background-attachment: fixed !important;
+    background-size: 100% 100% !important;
+}
+
+h1,h2,h3 {
+    padding-top: 5%;
+    padding-bottom: 2%;
+    color: lightblue !important;
+}
+
+.nav-link {
+    color: lightblue !important;
+}
+
+.navbar-brand {
+    color: lightblue !important;
+    font-weight: bold;
+}
+
+.navbar {
+    position: fixed !important;
+    top: 0 !important;
+    width: 100% !important;
+}

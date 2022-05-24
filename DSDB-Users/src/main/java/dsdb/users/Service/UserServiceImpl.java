@@ -32,12 +32,15 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public ResponseEntity<User> createUser(User user) {
+    public User createUser(User user) {
         user.setPassword(BCrypt.hashpw(user.getPassword(), BCrypt.gensalt(10)));
         User savedUser = userRepository.save(user);
-        URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
-                .buildAndExpand(savedUser.getUserId()).toUri();
-        return ResponseEntity.created(location).build();
+        if (savedUser.getUsername() != null) {
+            URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
+                    .buildAndExpand(savedUser.getUserId()).toUri();
+            return savedUser;
+        }
+        return new User();
     }
 
     @Override

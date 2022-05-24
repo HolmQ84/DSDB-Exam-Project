@@ -26,12 +26,12 @@ public class JsonModelConverter {
 
     public JSONObject songToObject(Song song) {
         JSONObject object = new JSONObject();
-        object.put("song_id", song.getSongId());
+        object.put("songId", song.getSongId());
         object.put("title", song.getTitle());
         object.put("rank", song.getRank());
         object.put("date", song.getDate());
         object.put("artist", song.getArtist());
-        object.put("spotify_url", song.getSpotifyUrl());
+        object.put("spotifyUrl", song.getSpotifyUrl());
         object.put("region", song.getRegion());
         object.put("streams", song.getStreams());
         object.put("loggerMessage", song.getLoggerMessage());

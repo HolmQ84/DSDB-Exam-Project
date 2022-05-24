@@ -67,13 +67,11 @@ public class MusicService {
 
     public List<Song> getSongByArtist(String artist) {
         List<Song> songs = musicRepository.findSongsByArtist(artist);
-        System.out.println(songs);
         return songs;
     }
 
     public Song getSongById(int musicId) {
         Song song = musicRepository.findSongById(musicId);
-        System.out.println(song);
         return song;
     }
 
@@ -81,3 +79,4 @@ public class MusicService {
         return musicRepository.getTop10SongsByRegion(region);
     }
 }
+

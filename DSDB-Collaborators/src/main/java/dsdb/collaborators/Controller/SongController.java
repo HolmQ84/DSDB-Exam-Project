@@ -2,6 +2,7 @@ package dsdb.collaborators.Controller;
 
 import dsdb.collaborators.Model.Song;
 import dsdb.collaborators.repository.SongRepository;
+import org.neo4j.driver.internal.shaded.reactor.core.publisher.Flux;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -39,5 +40,10 @@ public class SongController {
     @GetMapping("/test2/{title}")
     public Optional<Song> getSong2(@PathVariable String title) {
         return songRepository.getOptionalPersonViaQuery(title);
+    }
+
+    @GetMapping("/test3/{title}")
+    public Flux<Song> getSong3(@PathVariable String title) {
+        return songRepository.findByTitleContains(title);
     }
 }

@@ -2,6 +2,7 @@ package dsdb.collaborators.repository;
 
 import dsdb.collaborators.Model.Person;
 import dsdb.collaborators.Model.Song;
+import org.neo4j.driver.internal.shaded.reactor.core.publisher.Flux;
 import org.springframework.data.neo4j.repository.query.Query;
 import org.springframework.data.neo4j.repository.Neo4jRepository;
 import org.springframework.data.repository.query.Param;
@@ -31,4 +32,7 @@ public interface SongRepository extends Neo4jRepository<Song, Long> {
 
     @Query("MATCH (n:Song{name::#{#part1}}) return n")
     Optional<Song> getOptionalPersonViaQuery(@Param("part1") String part1);
+
+    @Query("MATCH(song:Song) WHERE song.name =~ $title RETURN song")
+    Flux<Song> findByTitleContains(String title);
 }

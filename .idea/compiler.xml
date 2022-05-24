@@ -8,6 +8,7 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="DSDB-Gateway" />
+        <module name="DSDB-FrontEnd" />
         <module name="DSDB-Users" />
         <module name="DSDB-Lyrics" />
         <module name="DSDB-EurekaServer" />
@@ -23,6 +24,7 @@
       <module name="DSDB-AudioFeatures" options="-parameters" />
       <module name="DSDB-Collaborators" options="-parameters" />
       <module name="DSDB-EurekaServer" options="-parameters" />
+      <module name="DSDB-FrontEnd" options="-parameters" />
       <module name="DSDB-Gateway" options="-parameters" />
       <module name="DSDB-Logger" options="-parameters" />
       <module name="DSDB-Lyrics" options="-parameters" />

@@ -12,9 +12,9 @@
         <module name="DSDB-Users" />
         <module name="DSDB-Lyrics" />
         <module name="DSDB-EurekaServer" />
-        <module name="DSDB-Music" />
         <module name="DSDB-AudioFeatures" />
         <module name="DSDB-Collaborators" />
+        <module name="DSDB-Music" />
         <module name="DSDB-Logger" />
       </profile>
     </annotationProcessing>

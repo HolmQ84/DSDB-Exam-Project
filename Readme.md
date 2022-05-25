@@ -38,7 +38,7 @@ The following image presents a Static Architecture Diagram of our application.\
 The diagram below shows the connection between our services, and how they are managed through the Eureka Server.
 It also serves as an overview of the different Micro Services, and which databases we use for the different Services/Applications.
 
-![StaticArchitectureDiagram.jpg](StaticArchitectureDiagram.jpg)
+![StaticArchitectureDiagram.jpg](images/StaticArchitectureDiagram.jpg)
 
 ### Kafka
 
@@ -58,7 +58,7 @@ The messages to Kafka includes:
 
 Below is an overview of how Kafka handles the different messages between our Micro Services.
 
-![Kafka Overview.jpg](Kafka-Overview.jpg)
+![Kafka Overview.jpg](images/Kafka-Overview.jpg)
 
 ## Overview of the different services:
 
@@ -145,7 +145,7 @@ Below we are listing the databases we use in this project.
 Netflix Eureka is our application that holds the information about all client-server applications.
 All the microservices in this application are registered into our Eureka server and then our Eureka server knows which port our individual service is running on - this means that we can easily create and annotate a API Gateway, which then has access to all the different Micro Services' endpoints.
 
-![](Eureka-Overview.png)
+![](images/Eureka-Overview.png)
 
 As shown above, we can access this information from our Eureka server, by going to our browser http://localhost:8761/ where we can get an overview of all the servers running, the names and on what port these services are running.
 ***
@@ -168,6 +168,51 @@ By this way, we ensure that all users passwords remain a secret.
 ### MongoDB
 
 ### Neo4j
+When we look at our neo4j graph, we are interested in seeing who is working with whom, and what people are collaborating a lot.
+First we are going to create our projection.
+
+    CALL gds.graph.project.cypher(
+        'artists',
+        'MATCH (p:Person) RETURN id(p) AS 'id',
+        'MATCH (p:Person)-[r:COLABORATED]->(m:Person) RETURN id(n) AS source, id(m) AS target')
+    YIELD
+        graphName AS graph, nodeQuery, nodeCount AS nodes, relationshipQuery, relationshipCount AS rels
+This query will create our graph projection. and via the YIELD command return the following:
+![img.png](images/Create_graph_projection.png)
+ 
+We can also check all of our graph projections by using:
+
+    CALL gds.graph.list()
+
+After we've created our projection, we can take a look closer to our data in our database.
+
+    CALL gds.degree.stream('artists')
+    YIELD nodeId, score
+    RETURN gds.util.asNode(nodeID).name AS name, score AS collaborators
+    ORDER BY collaborators DESC, name DESC
+This tells us who has been collaborator with most different people
+![img.png](images/Collaborated%20_out.png)
+
+We can also see who is a popular person for others to collaborate with
+
+    CALL gds.degree.stream(
+        'artists',
+        {orientation: 'REVERSE' }
+    )
+    YIELD nodeID, score
+    RETURN gds.util.asNode(nodeId).name AS name, score AS collaborators
+    ORDER BY collaborators DESC, name DESC
+
+![img.png](images/collaborators_in.png)
+
+We can see that "Drake" do almost have an equal amount of in and uot collaborators. The same is the case with "Young Thug",
+but the placement on the list is different.
+
+The following picture is showing the above two queries in a graph visualization:\
+![img.png](images/collaborators_graph.png)
+
+As can be seen "Young Thug" has 6 other artists who have collaborated with him, where "Young Thug" has collaborated with 5 other artist.
+
 
 ### Redis
 

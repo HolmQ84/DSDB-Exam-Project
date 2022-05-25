@@ -39,7 +39,7 @@ public class FeatureController {
         return featureService.deleteAudioFeatures(audioId);
     }
 
-    @GetMapping("/db/fill")
+    @GetMapping("/filldb")
     public String fillDBWithAudioFeatures() {
         int value = featureService.storeListOfFeaturesInDB(featureService.convertCSVtoListOfMusic());
         return "Music list successfully stored in MongoDB. " + value + " song added.";

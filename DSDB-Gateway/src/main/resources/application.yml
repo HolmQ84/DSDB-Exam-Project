@@ -19,19 +19,38 @@ spring:
         locator:
           enabled: true #Enables eureka discovery service
       routes:
+
         - id: DSDB-Users
           uri: lb://dsdb-users
           predicates:
             - Path=/users/**, /login/**
+
         - id: DSDB-Features
           uri: lb://dsdb-features
           predicates:
             - Path=/features/**
+
         - id: DSDB-Music
           uri: lb://dsdb-music
           predicates:
-            - Path=/music/**
+            - Path=/songs/**
+
         - id: DSDB-Lyrics
-            uri: lb://dsdb-lyrics
-            predicates:
-              - Path=/lyrics/**
+          uri: lb://dsdb-lyrics
+          predicates:
+            - Path=/lyrics/**
+
+        - id: DSDB-Logger
+          uri: lb://dsdb-logger
+          predicates:
+            - Path=/logger/**
+
+        - id: DSDB-Collaborators
+          uri: lb://dsdb-collaborators
+          predicates:
+            - Path=/collaborators/**
+
+        - id: DSDB-FrontEnd
+          uri: lb://dsdb-frontend
+          predicates:
+            - Path=/frontend/**

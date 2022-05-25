@@ -92,41 +92,53 @@ Below we list the technologies we are using for this project.
 |   Netflix Eureka 	| Used as our Microservice register, keeping tabs on our different services, and how to reach them.                                                                                                                                                                                                                                                                       	|
 |      Postman     	| Used to verify the API requests and response throughout the system. Additionally it is used to start the camunda flow.                                                                                                                                                                                                                                                  	|
 |      DBeaver     	| DBeaver is a universal Database Handler, which is able to hold several different connections to various databases, and thus simplifying the DB management.                                                                                                                                                                                                               	|
-|   Neo4J Desktop  	|                                                                                                                                                                                                                	|
+|   Neo4J Desktop  	| Neo4j is a graph database which consists of nodes and relationships between these nodes.                                                                                                                                                                                                                	|
 
 ## Chosen databases
 
 Below we are listing the databases we use in this project.
 
-|    Databases   	|                                                                                                                                                                                  Usage                                                                                                                                                                                  	|
-|:-----------------:|:-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------:	|
-|     MongoDB      	|                       |
-|    PostgreSQL   	|                       |
-|      Redis      	|                       |
-|      Neo4J    	|                       |
-|      MySQL     	|                       |
+|  Databases |    Type   |                                                                                                                                 Usage                                                                                                                                | 
+|:----------:|:---------:|:--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------:|
+|   MongoDB  |  Document |                                             We use MongoDB to store Lyrics our songs, and the artist preforming the song. besides that we use mongo to  store our log files, which can be accessed by the administrator.                                             | 
+| PostgreSQL |    RDB    |                                                                                                       In PostgreSQL we are storing our users and the user data.                                                                                                      | 
+|    Redis   | in-memory |                                                                                           Redis is used as a cache calls to the database on top of our client application.                                                                                           |  
+|    Neo4J   |   Graph   |                                      Neo4j is containing nodes with track name, with various relationships to the writers, producers, artists nodes.  These relationships is called [SANG], [COLLABORATED], [WROTE] and [FEATURED]                                     |  
+|    MySQL   |    RDB    | MySQL is containing the audio features that matches the tracks. these features are Longs, which are the different attributes on  the song, "Acousticness", "Dancability", "Energy", "Instrumentalness", "Liveness", "Loudness", "Speechiness", "Valance" and "Tempo" |  
 
+
+<br>
+<br>
+<br>
 
 ***
 ## Micro Services
 
-Below we list the different Micro Services we are using, and a brief explanation of their responsibilities.
+- Below we list the different Micro Services we are using, and a brief explanation of their responsibilities.
 
 #### DSDB-Users
+- This service is handling all transaction regarding users and makes sure the users' login credentials are correct in terms of password and username. 
 
 #### DSDB-Music
+- The DSDB-Music service is managing all calls to the MongoDB regarding the Track and artists related to the specific song.
 
 #### DSDB-AudioFeatures
+- Here we are managing all transactions happening to and from the MySql database which contains all the Audio features.
 
 #### DSDB-Lyrics
+- As the name implies, the DSDB-Lyric is responsible for handling the transactions we are running to get the lyrics of the songs.
 
 #### DSDB-Collaborators
+- This microservice is making sure we can deliver the collaborators on the individual tracks for the songs we are presenting through our other microservices.
 
 #### DSDB-Logger
+- In DSDB-Logger, we are managing the log files which can be presented to the administrators if requested. 
 
 #### DSDB-Gateway
+- This is more or less an empty shell which works as a middle man between our Eurika server, and our client application. 
 
 #### DSDB-FrontEnd
+- DSDB_FrontEnd has the responsibility of presenting the graphical user interface to the guest, user or administrator using our program.
 
 #### DSDB-EurekaServer
 
@@ -151,3 +163,12 @@ By this way, we ensure that all users passwords remain a secret.
 
 ***
 ## Database queries
+
+
+### MongoDB
+
+### Neo4j
+
+### Redis
+
+### PostgreSQL

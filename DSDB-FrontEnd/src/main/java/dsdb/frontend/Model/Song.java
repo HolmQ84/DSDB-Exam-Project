@@ -15,4 +15,6 @@ public class Song implements Serializable {
     private String spotifyUrl;
     private String region;
     private int streams;
+    private Features features;
+    private Lyrics lyrics;
 }

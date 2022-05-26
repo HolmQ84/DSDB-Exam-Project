@@ -16,7 +16,7 @@ public interface MusicRepository extends MongoRepository<Song, String> {
     @Query("{ 'musicId': ?0 }")
     Song findSongById(int id);
 
-    @Query("{ 'region' : {$regex:?0} , 'rank' : {$lte: 10} }")
+    @Query("{ 'region' : {$regex:?0} , 'rank' : {$lte: 10} , $orderby: { streams : -1 } }")
     List<Song> getTop10SongsByRegion(String region);
 
     // Query Example.

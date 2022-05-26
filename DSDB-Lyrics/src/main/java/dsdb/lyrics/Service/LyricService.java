@@ -25,7 +25,7 @@ public class LyricService {
     public List<Lyric> convertCSVtoListOfLyrics() {
         try{
             CSVReader reader=
-                    new CSVReaderBuilder(new FileReader("C:\\Users\\marti\\IdeaProjects\\DataScience-ExamProject\\DataScience-SongManagement\\data\\2000songWithLyrics.csv")).
+                    new CSVReaderBuilder(new FileReader("C:\\Users\\Nmtur\\PycharmProjects\\Cphbusiness 2_semester\\eksamens projekt\\DataScience-ExamProject\\DataScience-SongManagement\\data\\2000songWithLyrics.csv")).
                             withSkipLines(1). // Skiping firstline as it is header
                             build();
             List<Lyric> lyricList = reader.readAll().stream().map(data-> {

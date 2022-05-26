@@ -164,8 +164,25 @@ By this way, we ensure that all users passwords remain a secret.
 ***
 ## Database queries
 
-
 ### MongoDB
+When getting lyrics from our MongoDB database, we sometimes want to get more than just a single lyric.
+When this is the case, we are creating a list of id's and a function to return this.
+The following is an example on how this works:
+
+    var ids = [16,17];
+    var lyric_ids = ids.map(function(id) { return id; });
+    db.lyrics.find({songId: {$in: obj_ids}});
+
+MongoDB's native tongue is JavaScript, which allows us to make variables like we have done in the 
+previous example. 
+Here the database returns the lyric which corresponds to the id's inserted in our list.
+
+
+    db.log.find({$where: "this.date > 2022-05-20 && this.date < 2022-05-26 ",
+    call: /READ/ })
+
+The above query is used in our logging service, to find a specific call to our database. In this example, we are searching for 
+all the "reads" from the database between 20th of May 2022 and the 26th of May 2022.
 
 ### Neo4j
 When we look at our neo4j graph, we are interested in seeing who is working with whom, and what people are collaborating a lot.
@@ -212,6 +229,37 @@ The following picture is showing the above two queries in a graph visualization:
 ![img.png](images/collaborators_graph.png)
 
 As can be seen "Young Thug" has 6 other artists who have collaborated with him, where "Young Thug" has collaborated with 5 other artist.
+
+
+We can also see a triangle of what artist have collaborated the most. First we make a graph projection:
+
+    CALL gds.graph.project(
+    'Triangle',
+    'Person',
+    {COLLABORATED: {orientation: 'UNDIRECTED'}})
+
+Then we are counting the numbers of triangles in our graph database:
+
+    CALL gds.triangleCount.stream('Triangle')
+    YIELD nodeId, triangleCount
+    RETURN gds.util.asNode(nodeId).name AS name, triangleCount
+    ORDER BY triangleCount DESC
+
+This gives us the following overview:
+![img.png](images/Triangle_overview.png)
+
+By using the "Triangle" graph projection, we can also see who is in the triangles:
+
+    CALL gds.alpha.triangles('Triangle')
+    YIELD nodeA, nodeB, nodeC
+    RETURN
+    gds.util.asNode(nodeA).name AS nodeA,
+    gds.util.asNode(nodeB).name AS nodeB,
+    gds.util.asNode(nodeC).name AS nodeC
+
+![img.png](images/triangle_with_names.png)
+
+As shown by the triangleCount, "Boef" has the most triangle connections. Hereafter we can see with whom.
 
 
 ### Redis

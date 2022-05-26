@@ -173,8 +173,8 @@ First we are going to create our projection.
 
     CALL gds.graph.project.cypher(
         'artists',
-        'MATCH (p:Person) RETURN id(p) AS 'id',
-        'MATCH (p:Person)-[r:COLABORATED]->(m:Person) RETURN id(n) AS source, id(m) AS target')
+        'MATCH (p:Person) RETURN id(p) AS id',
+        'MATCH (p:Person)-[r:COLABORATED]->(m:Person) RETURN id(p) AS source, id(m) AS target')
     YIELD
         graphName AS graph, nodeQuery, nodeCount AS nodes, relationshipQuery, relationshipCount AS rels
 This query will create our graph projection. and via the YIELD command return the following:

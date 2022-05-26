@@ -1,24 +1,24 @@
 package dsdb.collaborators.Model;
 
 import lombok.Data;
-import org.springframework.data.neo4j.core.schema.*;
+import org.neo4j.ogm.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Data
-@RelationshipProperties
+@RelationshipEntity(type = "SANG")
 public class Role {
     @Id
     @GeneratedValue
     private Long id;
 
-    @Relationship
     private List<String> roles = new ArrayList<>();
 
-    @TargetNode
+    @StartNode
     private Person person;
 
-    @TargetNode
+    @EndNode
     private Song song;
+
 }

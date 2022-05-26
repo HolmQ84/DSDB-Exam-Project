@@ -1,14 +1,16 @@
 package dsdb.collaborators.Controller;
 
-import dsdb.collaborators.Model.Song;
-import dsdb.collaborators.repository.SongRepository;
-import org.neo4j.driver.internal.shaded.reactor.core.publisher.Flux;
+import dsdb.collaborators.Model.SongDTO;
+import dsdb.collaborators.Repository.SongRepository;
+import dsdb.collaborators.Service.SongService;
+import net.minidev.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import java.util.Collection;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/songs")
@@ -17,28 +19,16 @@ public class SongController {
     @Autowired
     SongRepository songRepository;
 
+    @Autowired
+    SongService songService;
+
     @GetMapping
-    public Iterable<Song> findAll() {
+    public List<List<JSONObject>> findAll() {
         return songRepository.getAllSongs();
     }
 
-    @GetMapping("/{name}")
-    public Song getSongByName(@PathVariable String name) {
-        return songRepository.getSongByName(name);
-    }
-
-    @GetMapping("/search/{name}")
-    public Iterable<Song> findSongByNameLike(@PathVariable String name) {
-        return songRepository.findSongByNameLike(name);
-    }
-
-    @GetMapping("/test1/{title}")
-    public List<Song> getSong(@PathVariable String title) {
-        return songRepository.getSong(title);
-    }
-
-    @GetMapping("/test2/{title}")
-    public Optional<Song> getSong2(@PathVariable String title) {
-        return songRepository.getOptionalPersonViaQuery(title);
+    @GetMapping("/{song}")
+    public SongDTO findSongByTitle(@PathVariable String song) {
+        return songService.convertObjectToSongDTO(song);
     }
 }

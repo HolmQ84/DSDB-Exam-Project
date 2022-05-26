@@ -1,7 +1,7 @@
 package dsdb.collaborators.Controller;
 
 import dsdb.collaborators.Model.Person;
-import dsdb.collaborators.repository.PersonRepository;
+import dsdb.collaborators.Repository.PersonRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,9 +17,9 @@ public class PersonController {
     @Autowired
     PersonRepository personRepository;
 
-    @GetMapping("/")
+    @GetMapping
     public Iterable<Person> findAllPersons() {
-        return personRepository.getAllPersons();
+        return personRepository.findAll();
     }
 
     @GetMapping("/{name}")

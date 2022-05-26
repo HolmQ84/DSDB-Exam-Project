@@ -50,7 +50,6 @@ public class MusicController {
         if (song != null) {
             song.setFeatures(featuresClient.getFeaturesById(id));
             song.setLyrics(lyricsClient.getLyricsById(id));
-            System.out.println(song.getLyrics().getLyrics());
         }
         ModelAndView modelAndView = new ModelAndView("song");
         modelAndView.addObject("song", song);

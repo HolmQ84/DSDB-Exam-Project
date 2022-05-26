@@ -2,35 +2,36 @@ package dsdb.collaborators.Model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
-import org.springframework.data.neo4j.core.schema.GeneratedValue;
-import org.springframework.data.neo4j.core.schema.Id;
-import org.springframework.data.neo4j.core.schema.Node;
-import org.springframework.data.neo4j.core.schema.Relationship;
-import org.springframework.data.neo4j.core.schema.Relationship.Direction;
+import org.neo4j.ogm.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.neo4j.ogm.annotation.Relationship.INCOMING;
+
 @Data
-@Node("Song")
+@NodeEntity
 public class Song {
     @Id
     @GeneratedValue
     private Long id;
-
     private String name;
 
-    @Relationship(value = "SANG", direction = Direction.INCOMING)
+    @JsonIgnoreProperties({"song", "sang"})
+    @Relationship(type = "SANG", direction = INCOMING)
     private List<Role> singers;
 
-    @Relationship(value = "PRODUCED", direction = Direction.INCOMING)
-    private List<Person> producers;
+    @JsonIgnoreProperties({"sang", "produced", "wrote", "featured", "collaborated"})
+    @Relationship(type = "PRODUCED", direction = INCOMING)
+    private List<Person> producers = new ArrayList<>();
 
-    @Relationship(value = "WROTE", direction = Direction.INCOMING)
-    private List<Person> writers;
+    @JsonIgnoreProperties({"sang", "wrote", "produced", "featured", "collaborated"})
+    @Relationship(type = "WROTE", direction = INCOMING)
+    private List<Person> writers = new ArrayList<>();
 
-    @Relationship(value = "FEATURED", direction = Direction.INCOMING)
-    private List<Person> features;
+    @JsonIgnoreProperties({"sang", "wrote", "produced", "featured", "collaborated"})
+    @Relationship(type = "FEATURED", direction = INCOMING)
+    private List<Person> features = new ArrayList<>();
 
     public Song() {
     }

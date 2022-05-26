@@ -1,11 +1,10 @@
 package dsdb.frontend.Controller;
 
+import dsdb.frontend.Model.Collaborators;
 import dsdb.frontend.Model.Song;
 import dsdb.frontend.Model.User;
-import dsdb.frontend.Service.FeaturesClient;
-import dsdb.frontend.Service.LyricsClient;
-import dsdb.frontend.Service.MusicClient;
-import dsdb.frontend.Service.SessionService;
+import dsdb.frontend.Service.*;
+import net.minidev.json.JSONArray;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -33,6 +32,9 @@ public class MusicController {
     @Autowired
     LyricsClient lyricsClient;
 
+    @Autowired
+    CollaboratorClient collaboratorClient;
+
     @GetMapping("/region/{region}")
     public List<Song> getSongsByRegion(@PathVariable String region) {
         return musicClient.getTop10RankedSongsByRegion(region);
@@ -50,10 +52,17 @@ public class MusicController {
         if (song != null) {
             song.setFeatures(featuresClient.getFeaturesById(id));
             song.setLyrics(lyricsClient.getLyricsById(id));
+            song.setCollaborators(collaboratorClient.getSongCollaborators());
         }
         ModelAndView modelAndView = new ModelAndView("song");
         modelAndView.addObject("song", song);
         modelAndView.addObject("user", (User) session.getAttribute("user"));
         return modelAndView;
     }
+
+    @GetMapping("/col/")
+    public Collaborators getCollaborators() {
+        return collaboratorClient.getSongCollaborators();
+    }
+
 }

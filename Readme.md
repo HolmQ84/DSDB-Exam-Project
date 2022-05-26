@@ -106,6 +106,12 @@ Below we are listing the databases we use in this project.
 |      Neo4J    	|                       |
 |      MySQL     	|                       |
 
+***
+## Database queries
+
+Description of different custom queries used to get data from databases.
+
+    Here is a custom query
 
 ***
 ## Micro Services
@@ -147,7 +153,3 @@ By this way, we ensure that all users passwords remain a secret.
 
 ***
 ## Use Cases
-
-
-***
-## Database queries

@@ -15,6 +15,7 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RequestMapping("/music")
 @RestController
@@ -60,9 +61,13 @@ public class MusicController {
         return modelAndView;
     }
 
-    @GetMapping("/col/")
-    public Collaborators getCollaborators() {
-        return collaboratorClient.getSongCollaborators();
+    @GetMapping()
+    public ModelAndView getSongById(HttpSession session, HttpServletResponse response) {
+        sessionService.sessionCheck(session, response);
+        List<Song> songs = musicClient.getAllSongs().stream().limit(100).collect(Collectors.toList());
+        ModelAndView modelAndView = new ModelAndView("songs");
+        modelAndView.addObject("songs", songs);
+        modelAndView.addObject("user", (User) session.getAttribute("user"));
+        return modelAndView;
     }
-
 }

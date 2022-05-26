@@ -24,7 +24,7 @@
                     <a class="nav-link" href="/login">Login Page</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/data/test">Visualizations</a>
+                    <a class="nav-link" href="/music">Top 100 List</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#">Yet another link</a>
@@ -47,14 +47,77 @@
     </nav>
 </div>
 
-<h1>Song Overview</h1>
-<div class="songContainer">
-    <p th:utext="${song.artist}"></p>
-    <p th:utext="${song.title}"></p>
-    <p th:utext="${song.features.duration_ms}"></p>
-    <p th:utext="${song.features.energy}"></p>
-    <p th:text="${song.collaborators.producers}"></p>
-    <span style="white-space: pre-line" th:text="${song.lyrics.lyrics}"></span>
+<div class="container songContainer">
+    <h1>Song Information</h1>
+    <table class="table table-bordered">
+        <tr>
+            <td>Artist</td>
+            <td th:text="${song.artist}"></td>
+        </tr>
+        <tr>
+            <td>Title</td>
+            <td th:text="${song.title}"></td>
+        </tr>
+        <tr>
+            <td>Highest Rank</td>
+            <td th:text="${song.rank}"></td>
+        </tr>
+        <tr>
+            <td>Date for rank</td>
+            <td th:text="${song.date}"></td>
+        </tr>
+        <tr>
+            <td>Link to Spotify</td>
+            <td th:text="${song.spotifyUrl}"></td>
+        </tr>
+        <tr>
+            <td>Region</td>
+            <td th:text="${song.region}"></td>
+        </tr>
+        <tr>
+            <td>Number of Streams</td>
+            <td th:text="${song.streams}"></td>
+        </tr>
+    </table>
+    <h3>Additional Information</h3>
+    <table class="table table-bordered">
+        <tr>
+            <td>Features</td>
+            <td>
+                <ul>
+                    <li style="list-style-type:none;" th:each="featurings : ${song.collaborators.featurings}"><span th:text="${featurings}"></span></li>
+                </ul>
+            </td>
+        </tr>
+        <tr>
+            <td>Producers</td>
+            <td>
+                <ul>
+                    <li style="list-style-type:none;" th:each="producers : ${song.collaborators.producers}"><span th:text="${producers}"></span></li>
+                </ul>
+            </td>
+        </tr>
+        <tr>
+            <td>Writers</td>
+            <td>
+                <ul>
+                    <li style="list-style-type:none;" th:each="writers : ${song.collaborators.writers}"><span th:text="${writers}"></span></li>
+                </ul>
+            </td>
+        </tr>
+        <tr>
+            <td>Singers</td>
+            <td>
+                <ul>
+                    <li style="list-style-type:none;" th:each="singers : ${song.collaborators.singers}"><span th:text="${singers}"></span></li>
+                </ul>
+            </td>
+        </tr>
+    </table>
+    <h3>Lyrics</h3>
+    <div>
+        <span style="white-space: pre-line" th:text="${song.lyrics.lyrics}"></span>
+    </div>
 </div>
 
 

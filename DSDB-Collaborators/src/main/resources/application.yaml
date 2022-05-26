@@ -3,7 +3,7 @@ spring:
     neo4j:
       username: neo4j
       password: test1234
-      uri: bolt://localhost:11005
+      uri: bolt://localhost
 
   application:
     name: DSDB-Collaborators

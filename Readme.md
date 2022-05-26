@@ -38,7 +38,7 @@ The following image presents a Static Architecture Diagram of our application.\
 The diagram below shows the connection between our services, and how they are managed through the Eureka Server.
 It also serves as an overview of the different Micro Services, and which databases we use for the different Services/Applications.
 
-![StaticArchitectureDiagram.jpg](StaticArchitectureDiagram.jpg)
+![StaticArchitectureDiagram.jpg](images/StaticArchitectureDiagram.jpg)
 
 ### Kafka
 
@@ -58,7 +58,7 @@ The messages to Kafka includes:
 
 Below is an overview of how Kafka handles the different messages between our Micro Services.
 
-![Kafka Overview.jpg](Kafka-Overview.jpg)
+![Kafka Overview.jpg](images/Kafka-Overview.jpg)
 
 ## Overview of the different services:
 
@@ -92,54 +92,60 @@ Below we list the technologies we are using for this project.
 |   Netflix Eureka 	| Used as our Microservice register, keeping tabs on our different services, and how to reach them.                                                                                                                                                                                                                                                                       	|
 |      Postman     	| Used to verify the API requests and response throughout the system. Additionally it is used to start the camunda flow.                                                                                                                                                                                                                                                  	|
 |      DBeaver     	| DBeaver is a universal Database Handler, which is able to hold several different connections to various databases, and thus simplifying the DB management.                                                                                                                                                                                                               	|
-|   Neo4J Desktop  	|                                                                                                                                                                                                                	|
+|   Neo4J Desktop  	| Neo4j is a graph database which consists of nodes and relationships between these nodes.                                                                                                                                                                                                                	|
 
 ## Chosen databases
 
 Below we are listing the databases we use in this project.
 
-|    Databases   	|                                                                                                                                                                                  Usage                                                                                                                                                                                  	|
-|:-----------------:|:-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------:	|
-|     MongoDB      	|                       |
-|    PostgreSQL   	|                       |
-|      Redis      	|                       |
-|      Neo4J    	|                       |
-|      MySQL     	|                       |
+|  Databases |    Type   |                                                                                                                                 Usage                                                                                                                                | 
+|:----------:|:---------:|:--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------:|
+|   MongoDB  |  Document |                                             We use MongoDB to store Lyrics our songs, and the artist preforming the song. besides that we use mongo to  store our log files, which can be accessed by the administrator.                                             | 
+| PostgreSQL |    RDB    |                                                                                                       In PostgreSQL we are storing our users and the user data.                                                                                                      | 
+|    Redis   | in-memory |                                                                                           Redis is used as a cache calls to the database on top of our client application.                                                                                           |  
+|    Neo4J   |   Graph   |                                      Neo4j is containing nodes with track name, with various relationships to the writers, producers, artists nodes.  These relationships is called [SANG], [COLLABORATED], [WROTE] and [FEATURED]                                     |  
+|    MySQL   |    RDB    | MySQL is containing the audio features that matches the tracks. these features are Longs, which are the different attributes on  the song, "Acousticness", "Dancability", "Energy", "Instrumentalness", "Liveness", "Loudness", "Speechiness", "Valance" and "Tempo" |  
 
-***
-## Database queries
 
-Description of different custom queries used to get data from databases.
-
-    Here is a custom query
+<br>
+<br>
+<br>
 
 ***
 ## Micro Services
 
-Below we list the different Micro Services we are using, and a brief explanation of their responsibilities.
+- Below we list the different Micro Services we are using, and a brief explanation of their responsibilities.
 
 #### DSDB-Users
+- This service is handling all transaction regarding users and makes sure the users' login credentials are correct in terms of password and username. 
 
 #### DSDB-Music
+- The DSDB-Music service is managing all calls to the MongoDB regarding the Track and artists related to the specific song.
 
 #### DSDB-AudioFeatures
+- Here we are managing all transactions happening to and from the MySql database which contains all the Audio features.
 
 #### DSDB-Lyrics
+- As the name implies, the DSDB-Lyric is responsible for handling the transactions we are running to get the lyrics of the songs.
 
 #### DSDB-Collaborators
+- This microservice is making sure we can deliver the collaborators on the individual tracks for the songs we are presenting through our other microservices.
 
 #### DSDB-Logger
+- In DSDB-Logger, we are managing the log files which can be presented to the administrators if requested. 
 
 #### DSDB-Gateway
+- This is more or less an empty shell which works as a middle man between our Eurika server, and our client application. 
 
 #### DSDB-FrontEnd
+- DSDB_FrontEnd has the responsibility of presenting the graphical user interface to the guest, user or administrator using our program.
 
 #### DSDB-EurekaServer
 
 Netflix Eureka is our application that holds the information about all client-server applications.
 All the microservices in this application are registered into our Eureka server and then our Eureka server knows which port our individual service is running on - this means that we can easily create and annotate a API Gateway, which then has access to all the different Micro Services' endpoints.
 
-![](Eureka-Overview.png)
+![](images/Eureka-Overview.png)
 
 As shown above, we can access this information from our Eureka server, by going to our browser http://localhost:8761/ where we can get an overview of all the servers running, the names and on what port these services are running.
 ***
@@ -153,3 +159,61 @@ By this way, we ensure that all users passwords remain a secret.
 
 ***
 ## Use Cases
+
+
+***
+## Database queries
+
+
+### MongoDB
+
+### Neo4j
+When we look at our neo4j graph, we are interested in seeing who is working with whom, and what people are collaborating a lot.
+First we are going to create our projection.
+
+    CALL gds.graph.project.cypher(
+        'artists',
+        'MATCH (p:Person) RETURN id(p) AS id',
+        'MATCH (p:Person)-[r:COLABORATED]->(m:Person) RETURN id(p) AS source, id(m) AS target')
+    YIELD
+        graphName AS graph, nodeQuery, nodeCount AS nodes, relationshipQuery, relationshipCount AS rels
+This query will create our graph projection. and via the YIELD command return the following:
+![img.png](images/Create_graph_projection.png)
+ 
+We can also check all of our graph projections by using:
+
+    CALL gds.graph.list()
+
+After we've created our projection, we can take a look closer to our data in our database.
+
+    CALL gds.degree.stream('artists')
+    YIELD nodeId, score
+    RETURN gds.util.asNode(nodeID).name AS name, score AS collaborators
+    ORDER BY collaborators DESC, name DESC
+This tells us who has been collaborator with most different people
+![img.png](images/Collaborated%20_out.png)
+
+We can also see who is a popular person for others to collaborate with
+
+    CALL gds.degree.stream(
+        'artists',
+        {orientation: 'REVERSE' }
+    )
+    YIELD nodeID, score
+    RETURN gds.util.asNode(nodeId).name AS name, score AS collaborators
+    ORDER BY collaborators DESC, name DESC
+
+![img.png](images/collaborators_in.png)
+
+We can see that "Drake" do almost have an equal amount of in and uot collaborators. The same is the case with "Young Thug",
+but the placement on the list is different.
+
+The following picture is showing the above two queries in a graph visualization:\
+![img.png](images/collaborators_graph.png)
+
+As can be seen "Young Thug" has 6 other artists who have collaborated with him, where "Young Thug" has collaborated with 5 other artist.
+
+
+### Redis
+
+### PostgreSQL

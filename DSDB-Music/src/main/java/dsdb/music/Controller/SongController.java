@@ -13,7 +13,7 @@ import java.util.List;
 
 @RequestMapping("/songs")
 @RestController
-public class MusicController {
+public class SongController {
 
     @Autowired
     MusicService musicService;
@@ -22,19 +22,19 @@ public class MusicController {
     KafkaService kafkaService;
 
     @GetMapping("/")
-    public List<Song> getAllMusic() {
+    public List<Song> getAllSongs() {
         return musicService.getAllSongs();
     }
 
     @GetMapping("/{id}")
-    public Song getMusicById(@PathVariable int id) {
+    public Song getSongById(@PathVariable int id) {
         Song song = musicService.getSongById(id);
         kafkaService.sendToMusicTopic(kafkaService.songToObject(song), "Get Request - Song By ID");
         return song;
     }
 
     @GetMapping("/search/artist/{artist}")
-    public List<Song> getMusicByArtist(@PathVariable String artist) {
+    public List<Song> getSongByArtist(@PathVariable String artist) {
         System.out.println(artist);
         return musicService.getSongByArtist(artist);
     }
@@ -47,6 +47,6 @@ public class MusicController {
     @GetMapping("/filldb")
     public String musicToDB() {
         int value = musicService.storeListOfMusicInMongoDB(musicService.convertCSVtoListOfMusic());
-        return "Music list successfully stored in MongoDB. " + value + " song added.";
+        return "Songs list successfully stored in MongoDB. " + value + " song added.";
     }
 }

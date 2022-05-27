@@ -185,6 +185,32 @@ The above query is used in our logging service, to find a specific call to our d
 all the "reads" from the database between 20th of May 2022 and the 26th of May 2022.
 
 ### Neo4j
+First thing first, we have to populate our database. This is done by our web scraper to scrape web page "https://genius.com" for information
+about the songs and collaborators on the songs. here we get writers, producers and featuring artists.
+Hereafter we store these informations in a .csv file and load them into our Neo4j graph database with the apoc library.
+
+    CALL apoc.load.csv('collaborators.csv')
+    YIELD lineNo, map, list
+    
+    WHERE map.Feature IS NOT NULL
+    MERGE (f:Person {name:map.Feature})
+    MERGE (a:Person {name:"'''+ artist + '''"})
+    MERGE (w:Person {name:map.Writer})
+    MERGE (p:Person {name:map.Producer})
+    MERGE (l:Label {name:map.Label})
+    MERGE (s:Song {name:"'''+ track +'''", rank: "'''+ ranking + '''"})
+    
+    
+    MERGE (f)-[:COLLABORATED]-(a)
+    MERGE (f)-[:FEATURED]->(s)
+    MERGE (a)-[:SANG]->(s)
+    MERGE (w)-[:WROTE]->(s)
+    MERGE (l)-[:RELEASED]->(s)
+    MERGE (p)-[:PRODUCED]->(s);
+
+
+
+
 When we look at our neo4j graph, we are interested in seeing who is working with whom, and what people are collaborating a lot.
 First we are going to create our projection.
 
@@ -207,7 +233,7 @@ After we've created our projection, we can take a look closer to our data in our
     YIELD nodeId, score
     RETURN gds.util.asNode(nodeID).name AS name, score AS collaborators
     ORDER BY collaborators DESC, name DESC
-This tells us who has been collaborator with most different people
+This tells us who has been collaborator with most different people\
 ![img.png](images/Collaborated%20_out.png)
 
 We can also see who is a popular person for others to collaborate with
@@ -245,7 +271,7 @@ Then we are counting the numbers of triangles in our graph database:
     RETURN gds.util.asNode(nodeId).name AS name, triangleCount
     ORDER BY triangleCount DESC
 
-This gives us the following overview:
+This gives us the following overview:\
 ![img.png](images/Triangle_overview.png)
 
 By using the "Triangle" graph projection, we can also see who is in the triangles:

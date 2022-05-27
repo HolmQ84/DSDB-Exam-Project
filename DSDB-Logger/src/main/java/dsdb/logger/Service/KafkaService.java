@@ -3,9 +3,11 @@ package dsdb.logger.Service;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import dsdb.logger.Model.AudioFeatures;
+import dsdb.logger.Model.Session;
 import dsdb.logger.Model.Song;
 import dsdb.logger.Model.User;
 import dsdb.logger.Repository.FeatureRepository;
+import dsdb.logger.Repository.SessionRepository;
 import dsdb.logger.Repository.SongRepository;
 import dsdb.logger.Repository.UserRepository;
 import org.slf4j.Logger;
@@ -27,6 +29,9 @@ public class KafkaService {
 
     @Autowired
     FeatureRepository featureRepository;
+
+    @Autowired
+    SessionRepository sessionRepository;
 
     private final Logger logger = LoggerFactory.getLogger(KafkaService.class);
 
@@ -59,6 +64,18 @@ public class KafkaService {
             AudioFeatures features = new Gson().fromJson(message, AudioFeatures.class);
             logger.info("Features added to logfile - message: " + features.getLoggerMessage());
             featureRepository.save(features);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @KafkaListener(topics = "stats", groupId = "DSDB-Logger")
+    public void statsLoggerListener(String message) {
+        try {
+            Gson gson = new GsonBuilder().setDateFormat("EEE MMM dd HH:mm:ss zzz yyyy").create();
+            Session session = gson.fromJson(message, Session.class);
+            logger.info("Stats added to logfile");
+            sessionRepository.save(session);
         } catch (Exception e) {
             e.printStackTrace();
         }

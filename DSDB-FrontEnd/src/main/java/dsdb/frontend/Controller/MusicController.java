@@ -37,18 +37,23 @@ public class MusicController {
     CollaboratorClient collaboratorClient;
 
     @GetMapping("/region/{region}")
-    public List<Song> getSongsByRegion(@PathVariable String region) {
+    public List<Song> getSongsByRegion(@PathVariable String region, HttpSession session, HttpServletResponse response) {
+        sessionService.sessionCheck(session, response);
+        sessionService.updateSession(session, response, "getSongsByRegion", region);
         return musicClient.getTop10RankedSongsByRegion(region);
     }
 
     @GetMapping("/artist/{artist}")
-    public List<Song> getSongsByArtistLike(@PathVariable String artist) {
+    public List<Song> getSongsByArtistLike(@PathVariable String artist, HttpSession session, HttpServletResponse response) {
+        sessionService.sessionCheck(session, response);
+        sessionService.updateSession(session, response, "getSongsByArtistLike", artist);
         return musicClient.getSongsByArtistLike(artist);
     }
 
     @GetMapping("/{id}")
     public ModelAndView getSongById(@PathVariable int id, HttpSession session, HttpServletResponse response) {
         sessionService.sessionCheck(session, response);
+        sessionService.updateSession(session, response, "getSongById", Integer.toString(id));
         Song song = musicClient.getSongById(id);
         if (song != null) {
             song.setFeatures(featuresClient.getFeaturesById(id));
@@ -62,8 +67,9 @@ public class MusicController {
     }
 
     @GetMapping()
-    public ModelAndView getSongById(HttpSession session, HttpServletResponse response) {
+    public ModelAndView getAllSongsLimitedTo100(HttpSession session, HttpServletResponse response) {
         sessionService.sessionCheck(session, response);
+        sessionService.updateSession(session, response, "getAllSongsLimitedTo100", null);
         List<Song> songs = musicClient.getAllSongs().stream().limit(100).collect(Collectors.toList());
         ModelAndView modelAndView = new ModelAndView("songs");
         modelAndView.addObject("songs", songs);

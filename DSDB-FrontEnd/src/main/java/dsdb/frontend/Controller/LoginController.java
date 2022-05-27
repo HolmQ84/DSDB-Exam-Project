@@ -1,5 +1,6 @@
 package dsdb.frontend.Controller;
 
+import dsdb.frontend.Model.Session;
 import dsdb.frontend.Model.User;
 import dsdb.frontend.Service.SessionService;
 import dsdb.frontend.Service.UserClient;
@@ -40,6 +41,7 @@ public class LoginController {
         User user = userClient.authenticate(loginUser);
         if (user.getUsername() != null) {
             request.getSession().setAttribute("user", user);
+            request.getSession().setAttribute("session", new Session(user.getUserId()));
             return new RedirectView("/");
         }
         return new RedirectView("/login");
@@ -50,11 +52,13 @@ public class LoginController {
         sessionService.sessionCheck(session, response);
         ModelAndView modelAndView = new ModelAndView("index");
         modelAndView.addObject("user", session.getAttribute("user"));
+        sessionService.updateSession(session, response, "Index Page", null);
         return modelAndView;
     }
 
     @GetMapping("/logout")
     public RedirectView logout(HttpServletRequest request, HttpSession session) {
+        sessionService.saveSessionData(session);
         session = request.getSession(false);
         session.invalidate();
         return new RedirectView("/login");

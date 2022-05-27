@@ -9,7 +9,7 @@
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-    <title>Index Page</title>
+    <title>Song Page</title>
 </head>
 <body>
 <div>
@@ -19,16 +19,8 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
             <a class="navbar-brand" href="/">DS/DB Exam project</a>
-            <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
-                <li class="nav-item">
-                    <a class="nav-link" href="/login">Login Page</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/music">Top 100 List</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Yet another link</a>
-                </li>
+            <ul class="navbar-nav mr-auto mt-2 mt-lg-0" id="link_list">
+
             </ul>
             <div>
             <span th:if="${user.username}" style="color: lightblue">Logged In As
@@ -85,7 +77,7 @@
             <td>Features</td>
             <td>
                 <ul>
-                    <li style="list-style-type:none;" th:each="featurings : ${song.collaborators.featurings}"><span th:text="${featurings}"></span></li>
+                    <li style="list-style-type:none;" th:each="features : ${song.collaborators.features}"><span th:text="${features}"></span></li>
                 </ul>
             </td>
         </tr>
@@ -114,12 +106,47 @@
             </td>
         </tr>
     </table>
+    <h3>Audio Features</h3>
+    <table class="table table-bordered">
+        <tr><td>Danceability</td><td th:text="${song.features.danceability}"></td></tr>
+        <tr><td>Energy</td><td th:text="${song.features.energy}"></td></tr>
+        <tr><td>On Key</td><td th:text="${song.features.onKey}"></td></tr>
+        <tr><td>Loudness</td><td th:text="${song.features.loudness}"></td></tr>
+        <tr><td>Speechiness</td><td th:text="${song.features.speechiness}"></td></tr>
+        <tr><td>Acousticness</td><td th:text="${song.features.acousticness}"></td></tr>
+        <tr><td>Instrumentalness</td><td th:text="${song.features.instrumentalness}"></td></tr>
+        <tr><td>Liveness</td><td th:text="${song.features.liveness}"></td></tr>
+        <tr><td>Valence</td><td th:text="${song.features.valence}"></td></tr>
+        <tr><td>Tempo</td><td th:text="${song.features.tempo}"></td></tr>
+        <tr><td>Duration (ms)</td><td th:text="${song.features.duration_ms}"></td></tr>
+    </table>
     <h3>Lyrics</h3>
     <div>
         <span style="white-space: pre-line" th:text="${song.lyrics.lyrics}"></span>
     </div>
 </div>
 
+<script th:inline="javascript">
+    /*<![CDATA[*/
 
+    const userLevel = /*[[${user.userLevel}]]*/ 'default';
+    if (userLevel === 'admin') {
+        $('#link_list').append(
+            '<li class="nav-item">\n' +
+            '   <a class="nav-link" href="/music">Top 100 List</a>\n' +
+            '</li>' +
+            '<li class="nav-item">\n' +
+            '   <a class="nav-link" href="/log">Show log</a>\n' +
+            '</li>'
+        )
+    } else {
+        $('#link_list').append(
+            '<li class="nav-item">\n' +
+            '   <a class="nav-link" href="/music">Top 100 List</a>\n' +
+            '</li>'
+        )
+    }
+    /*]]>*/
+</script>
 </body>
 </html>

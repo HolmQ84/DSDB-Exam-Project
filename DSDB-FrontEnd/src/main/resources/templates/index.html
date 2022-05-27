@@ -17,16 +17,8 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
             <a class="navbar-brand" href="/">DS/DB Exam project</a>
-            <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
-                <li class="nav-item">
-                    <a class="nav-link" href="/login">Login Page</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/music">Top 100 List</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Yet another link</a>
-                </li>
+            <ul class="navbar-nav mr-auto mt-2 mt-lg-0" id="link_list">
+
             </ul>
             <div>
             <span th:if="${user.username}" style="color: lightblue">Logged In As
@@ -50,5 +42,27 @@
 
 <h3 id="welcome" th:text="'Welcome back '+${user.username}"></h3>
 
+<script th:inline="javascript">
+    /*<![CDATA[*/
+
+    const userLevel = /*[[${user.userLevel}]]*/ 'default';
+    if (userLevel === 'admin') {
+        $('#link_list').append(
+            '<li class="nav-item">\n' +
+            '   <a class="nav-link" href="/music">Top 100 List</a>\n' +
+            '</li>' +
+            '<li class="nav-item">\n' +
+            '   <a class="nav-link" href="/log">Show log</a>\n' +
+            '</li>'
+        )
+    } else {
+        $('#link_list').append(
+            '<li class="nav-item">\n' +
+            '   <a class="nav-link" href="/music">Top 100 List</a>\n' +
+            '</li>'
+        )
+    }
+    /*]]>*/
+</script>
 </body>
 </html>

@@ -1,4 +1,4 @@
-mRANT ALL PRIVILEGES ON features.* TO 'test1234'@'localhost';
+GRANT ALL PRIVILEGES ON features.* TO 'test1234'@'localhost';
 
 CREATE SCHEMA IF NOT EXISTS features;
 

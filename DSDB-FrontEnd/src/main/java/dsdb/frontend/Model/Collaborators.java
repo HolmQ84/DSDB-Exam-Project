@@ -4,11 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Collaborators {
-    private List<String> singers = new ArrayList<>();
-    private List<String> writers = new ArrayList<>();
-    private List<String> producers = new ArrayList<>();
-    private List<String> featurings = new ArrayList<>();
-
+    private final List<String> singers = new ArrayList<>();
+    private final List<String> writers = new ArrayList<>();
+    private final List<String> producers = new ArrayList<>();
+    private final List<String> features = new ArrayList<>();
 
     public List<String> getSingers() {
         return singers;
@@ -34,11 +33,11 @@ public class Collaborators {
         this.producers.add(producer);
     }
 
-    public List<String> getFeaturings() {
-        return featurings;
+    public List<String> getFeatures() {
+        return features;
     }
 
-    public void setFeaturings(String featuring) {
-        this.featurings.add(featuring);
+    public void addFeatures(String features) {
+        this.producers.add(features);
     }
 }

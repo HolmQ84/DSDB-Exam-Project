@@ -8,7 +8,7 @@ import java.io.Serializable;
 
 @Data
 @Document(collection = "features")
-public class AudioFeatures implements Serializable {
+public class AudioFeaturesInfo implements Serializable {
 
     @Id
     private int audioId;

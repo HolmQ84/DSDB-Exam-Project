@@ -26,3 +26,8 @@ h1,h2,h3 {
     top: 0 !important;
     width: 100% !important;
 }
+
+a {
+    color: lightblue !important;
+    font-weight: bold !important;
+}

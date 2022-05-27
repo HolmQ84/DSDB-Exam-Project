@@ -3,7 +3,7 @@ package dsdb.logger.Service;
 import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import dsdb.logger.Model.Song;
+import dsdb.logger.Model.SongInfo;
 import net.minidev.json.JSONArray;
 import net.minidev.json.JSONObject;
 
@@ -12,29 +12,29 @@ import java.util.List;
 
 public class JsonModelConverter {
 
-    public List<Song> convertJsonToListOfSongs(JSONArray songs) {
+    public List<SongInfo> convertJsonToListOfSongs(JSONArray songs) {
         Gson gson = new GsonBuilder().setDateFormat("EEE MMM dd HH:mm:ss zzz yyyy").create();
-        Type type = new TypeToken<List<Song>>(){}.getType();
+        Type type = new TypeToken<List<SongInfo>>(){}.getType();
         return gson.fromJson(String.valueOf(songs), type);
     }
 
-    public Song convertGameDTOToModel(JSONObject game) {
+    public SongInfo convertGameDTOToModel(JSONObject game) {
         Gson gson = new Gson();
-        Type type = new TypeToken<Song>(){}.getType();
+        Type type = new TypeToken<SongInfo>(){}.getType();
         return gson.fromJson(String.valueOf(game), type);
     }
 
-    public JSONObject songToObject(Song song) {
+    public JSONObject songToObject(SongInfo songInfo) {
         JSONObject object = new JSONObject();
-        object.put("songId", song.getSongId());
-        object.put("title", song.getTitle());
-        object.put("rank", song.getRank());
-        object.put("date", song.getDate());
-        object.put("artist", song.getArtist());
-        object.put("spotifyUrl", song.getSpotifyUrl());
-        object.put("region", song.getRegion());
-        object.put("streams", song.getStreams());
-        object.put("loggerMessage", song.getLoggerMessage());
+        object.put("songId", songInfo.getSongId());
+        object.put("title", songInfo.getTitle());
+        object.put("rank", songInfo.getRank());
+        object.put("date", songInfo.getDate());
+        object.put("artist", songInfo.getArtist());
+        object.put("spotifyUrl", songInfo.getSpotifyUrl());
+        object.put("region", songInfo.getRegion());
+        object.put("streams", songInfo.getStreams());
+        object.put("loggerMessage", songInfo.getLoggerMessage());
         return object;
     }
 }

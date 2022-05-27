@@ -27,10 +27,11 @@ public class LoginController {
     SessionService sessionService;
 
     @GetMapping("/login")
-    public ModelAndView loginPage(HttpSession session, HttpServletResponse response, @ModelAttribute User model) throws IOException {
+    public ModelAndView loginPage(HttpSession session, HttpServletResponse response, @ModelAttribute User model) {
         sessionService.loginCheck(session, response);
         ModelAndView modelAndView = new ModelAndView("login");
         modelAndView.addObject("user", model);
+
         session.setAttribute("user", new User());
         modelAndView.addObject("user", session.getAttribute("user"));
         return modelAndView;
@@ -52,7 +53,9 @@ public class LoginController {
         sessionService.sessionCheck(session, response);
         ModelAndView modelAndView = new ModelAndView("index");
         modelAndView.addObject("user", session.getAttribute("user"));
-        sessionService.updateSession(session, response, "Index Page", null);
+        if (session.getAttribute("session") != null) {
+            sessionService.updateSession(session, response, "Index Page", null);
+        }
         return modelAndView;
     }
 

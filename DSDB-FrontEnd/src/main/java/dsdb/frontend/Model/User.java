@@ -12,5 +12,6 @@ public class User implements Serializable {
     private String email;
     private String userLevel;
     private Person person;
+
 }
 

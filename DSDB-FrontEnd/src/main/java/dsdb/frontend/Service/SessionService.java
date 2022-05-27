@@ -18,7 +18,7 @@ public class SessionService {
     public void loginCheck(HttpSession session, HttpServletResponse response) {
         User current = (User) session.getAttribute("user");
         try {
-            if (current.getUsername() != null) {
+            if (current != null) {
                 System.out.println("Login Check - User is logged in.");
                 response.sendRedirect("/");
             }
@@ -31,7 +31,7 @@ public class SessionService {
     public void sessionCheck(HttpSession session, HttpServletResponse response) {
         User current = (User) session.getAttribute("user");
         try {
-            if (current.getUsername() == null) {
+            if (current == null) {
                 System.out.println("Session Check - User is null");
                 response.sendRedirect("/login");
             }
@@ -42,7 +42,6 @@ public class SessionService {
     }
 
     public void updateSession(HttpSession session, HttpServletResponse response, String url, String searchQuery) {
-        sessionCheck(session, response);
         Session currentSession = (Session) session.getAttribute("session");
         if (searchQuery != null) {
             currentSession.addPagesVisited(url + " (With search query: " + searchQuery + ")");

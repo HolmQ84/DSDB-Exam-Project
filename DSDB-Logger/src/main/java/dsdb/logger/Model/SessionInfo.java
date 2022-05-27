@@ -10,14 +10,14 @@ import java.util.List;
 
 @Data
 @Document("sessions")
-public class Session implements Serializable {
+public class SessionInfo implements Serializable {
     public int sessionId;
     public int userId;
     public List<String> pagesVisited = new ArrayList<>();
     public Date startTime;
     public Date endTime;
 
-    public Session(int userId) {
+    public SessionInfo(int userId) {
         this.userId = userId;
         this.startTime = new Date();
     }

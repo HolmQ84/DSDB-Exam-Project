@@ -1,9 +1,9 @@
 package dsdb.logger.Repository;
 
-import dsdb.logger.Model.User;
+import dsdb.logger.Model.UserInfo;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface UserRepository extends MongoRepository<User, Integer> {
+public interface UserRepository extends MongoRepository<UserInfo, Integer> {
 }

@@ -21,7 +21,11 @@ public class CollaboratorClient {
         HttpHeaders headers = new HttpHeaders();
         headers.setAccept(List.of(MediaType.APPLICATION_JSON));
         HttpEntity <String> entity = new HttpEntity<String>(headers);
-
-        return restTemplate.exchange("http://localhost:8085/songs/Chantaje", HttpMethod.GET, entity, Collaborators.class).getBody();
+        try {
+            return restTemplate.exchange("http://localhost:8085/songs/Chantaje", HttpMethod.GET, entity, Collaborators.class).getBody();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new Collaborators();
+        }
     }
 }

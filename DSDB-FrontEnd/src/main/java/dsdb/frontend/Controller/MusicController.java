@@ -1,6 +1,7 @@
 package dsdb.frontend.Controller;
 
 import dsdb.frontend.Model.Collaborators;
+import dsdb.frontend.Model.Error;
 import dsdb.frontend.Model.Song;
 import dsdb.frontend.Model.User;
 import dsdb.frontend.Service.*;
@@ -23,18 +24,16 @@ public class MusicController {
 
     @Autowired
     MusicClient musicClient;
-
     @Autowired
     SessionService sessionService;
-
     @Autowired
     FeaturesClient featuresClient;
-
     @Autowired
     LyricsClient lyricsClient;
-
     @Autowired
     CollaboratorClient collaboratorClient;
+    @Autowired
+    KafkaService kafkaService;
 
     @GetMapping("/region/{region}")
     public List<Song> getSongsByRegion(@PathVariable String region, HttpSession session, HttpServletResponse response) {
@@ -56,7 +55,12 @@ public class MusicController {
         sessionService.updateSession(session, response, "getSongById", Integer.toString(id));
         Song song = musicClient.getSongById(id);
         if (song != null) {
-            song.setFeatures(featuresClient.getFeaturesById(id));
+            try {
+                song.setFeatures(featuresClient.getFeaturesById(id));
+            } catch (Exception e) {
+                kafkaService.sendToErrorTopic(kafkaService.errorToObject(new Error(e.getMessage(), e.getClass().getName())));
+            }
+
             song.setLyrics(lyricsClient.getLyricsById(id));
             song.setCollaborators(collaboratorClient.getSongCollaborators());
         }

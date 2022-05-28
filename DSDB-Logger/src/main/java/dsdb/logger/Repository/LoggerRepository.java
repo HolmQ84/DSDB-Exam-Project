@@ -5,13 +5,14 @@ import dsdb.logger.Model.SongInfo;
 import org.springframework.data.mongodb.repository.Aggregation;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.mongodb.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
 @Repository
 public interface LoggerRepository extends MongoRepository<LoggerInfo, Integer> {
-
+    String start = "2022-05-20";
 
     @Aggregation(pipeline = qureyForGettingTime)
     List<LoggerInfo> getTimeLog();
@@ -21,7 +22,7 @@ public interface LoggerRepository extends MongoRepository<LoggerInfo, Integer> {
     String qureyForGettingTime = "{\n" +
             "        $match: {\n" +
             "           'start': {\n" +
-            "              $gte: ISODate('2022-05-20'), $lt: ISODate('2022-05-22')\n" +
+            "              $gte: ISODate(), $lt: ISODate('2022-05-22')\n" +
             "           }\n" +
             "        }\n" +
             "     },\n" +
@@ -40,7 +41,4 @@ public interface LoggerRepository extends MongoRepository<LoggerInfo, Integer> {
             "           }\n" +
             "        }\n" +
             "     }\n";
-
-
-
 }

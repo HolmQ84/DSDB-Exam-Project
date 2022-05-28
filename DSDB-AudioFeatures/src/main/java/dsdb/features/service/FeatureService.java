@@ -72,25 +72,24 @@ public class FeatureService {
 
     public List<AudioFeatures> convertCSVtoListOfMusic() {
         try{
-
             CSVReader reader =
-                    new CSVReaderBuilder(new FileReader("C:\\Users\\Nmtur\\PycharmProjects\\Cphbusiness 2_semester\\eksamens projekt\\DataScience-ExamProject\\DataScience-SongManagement\\data\\cleanedDatasetWithFeatures.csv")).
+                    new CSVReaderBuilder(new FileReader("C:\\Users\\marti\\IdeaProjects\\DataScience-ExamProject\\DataScience-SongManagement\\data\\cleanedDatasetWithFeatures.csv")).
                             withSkipLines(1). // Skiping first line as it is header. // TODO - Replace with own path.
                             build();
             List<AudioFeatures> musicList = reader.readAll().stream().map(data-> {
                 AudioFeatures audioFeatures = new AudioFeatures();
                 audioFeatures.setAudioId(Integer.parseInt(data[0]));
-                audioFeatures.setDanceability(data[8]);
-                audioFeatures.setEnergy(data[9]);
-                audioFeatures.setOnKey(data[10]);
-                audioFeatures.setLoudness(data[11]);
-                audioFeatures.setSpeechiness(data[12]);
-                audioFeatures.setAcousticness(data[13]);
-                audioFeatures.setInstrumentalness(data[14]);
-                audioFeatures.setLiveness(data[15]);
-                audioFeatures.setValence(data[16]);
-                audioFeatures.setTempo(data[17]);
-                audioFeatures.setDuration_ms(data[18]);
+                audioFeatures.setDanceability(data[7]);
+                audioFeatures.setEnergy(data[8]);
+                audioFeatures.setOnKey(data[9]);
+                audioFeatures.setLoudness(data[10]);
+                audioFeatures.setSpeechiness(data[11]);
+                audioFeatures.setAcousticness(data[12]);
+                audioFeatures.setInstrumentalness(data[13]);
+                audioFeatures.setLiveness(data[14]);
+                audioFeatures.setValence(data[15]);
+                audioFeatures.setTempo(data[16]);
+                audioFeatures.setDuration_ms(data[17]);
                 return audioFeatures;
             }).collect(Collectors.toList());
             return musicList;

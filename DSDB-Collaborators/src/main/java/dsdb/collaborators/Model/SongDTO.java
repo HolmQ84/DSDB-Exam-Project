@@ -1,10 +1,12 @@
 package dsdb.collaborators.Model;
 
 import lombok.Data;
+import lombok.ToString;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@ToString
 @Data
 public class SongDTO {
     private String name;

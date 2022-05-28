@@ -6,6 +6,7 @@ import com.opencsv.exceptions.CsvException;
 import dsdb.music.Model.Song;
 import dsdb.music.Repository.MusicRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 import org.springframework.stereotype.Service;
 
@@ -28,7 +29,7 @@ public class MusicService {
     public List<Song> convertCSVtoListOfMusic() {
         try{
             CSVReader reader=
-                    new CSVReaderBuilder(new FileReader("C:\\Users\\Nmtur\\PycharmProjects\\Cphbusiness 2_semester\\eksamens projekt\\DataScience-ExamProject\\DataScience-SongManagement\\data\\cleanedDatasetWithFeatures.csv")).
+                    new CSVReaderBuilder(new FileReader("C:\\Users\\marti\\IdeaProjects\\DataScience-ExamProject\\DataScience-SongManagement\\data\\cleanedDatasetWithFeatures.csv")).
                             withSkipLines(1). // Skiping firstline as it is header
                             build();
             List<Song> songList = reader.readAll().stream().map(data-> {
@@ -66,8 +67,7 @@ public class MusicService {
     }
 
     public List<Song> getSongByArtist(String artist) {
-        List<Song> songs = musicRepository.findSongsByArtist(artist);
-        return songs;
+        return musicRepository.findSongsByArtist(artist);
     }
 
     public Song getSongById(int songId) {

@@ -9,7 +9,7 @@
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-    <title>Song Page</title>
+    <title>Song List Page</title>
 </head>
 <body>
 <div>
@@ -39,92 +39,7 @@
     </nav>
 </div>
 
-<div class="container songContainer">
-    <h1>Song Information</h1>
-    <table class="table table-bordered">
-        <tr>
-            <td>Artist</td>
-            <td th:text="${songInfo.artist}"></td>
-        </tr>
-        <tr>
-            <td>Title</td>
-            <td th:text="${songInfo.title}"></td>
-        </tr>
-        <tr>
-            <td>Highest Rank</td>
-            <td th:text="${songInfo.rank}"></td>
-        </tr>
-        <tr>
-            <td>Date for rank</td>
-            <td th:text="${songInfo.date}"></td>
-        </tr>
-        <tr>
-            <td>Link to Spotify</td>
-            <td><a th:text="${songInfo.spotifyUrl}" th:href="${songInfo.spotifyUrl}"></a></td>
-        </tr>
-        <tr>
-            <td>Region</td>
-            <td th:text="${songInfo.region}"></td>
-        </tr>
-        <tr>
-            <td>Number of Streams</td>
-            <td th:text="${songInfo.streams}"></td>
-        </tr>
-    </table>
-    <h3>Additional Information</h3>
-    <table class="table table-bordered">
-        <tr>
-            <td>Features</td>
-            <td>
-                <ul>
-                    <li style="list-style-type:none;" th:each="features : ${songInfo.collaborators.features}"><span th:text="${features}"></span></li>
-                </ul>
-            </td>
-        </tr>
-        <tr>
-            <td>Producers</td>
-            <td>
-                <ul>
-                    <li style="list-style-type:none;" th:each="producers : ${songInfo.collaborators.producers}"><span th:text="${producers}"></span></li>
-                </ul>
-            </td>
-        </tr>
-        <tr>
-            <td>Writers</td>
-            <td>
-                <ul>
-                    <li style="list-style-type:none;" th:each="writers : ${songInfo.collaborators.writers}"><span th:text="${writers}"></span></li>
-                </ul>
-            </td>
-        </tr>
-        <tr>
-            <td>Singers</td>
-            <td>
-                <ul>
-                    <li style="list-style-type:none;" th:each="singers : ${songInfo.collaborators.singers}"><span th:text="${singers}"></span></li>
-                </ul>
-            </td>
-        </tr>
-    </table>
-    <h3>Audio Features</h3>
-    <table class="table table-bordered">
-        <tr><td>Danceability</td><td th:text="${songInfo.features.danceability}"></td></tr>
-        <tr><td>Energy</td><td th:text="${songInfo.features.energy}"></td></tr>
-        <tr><td>On Key</td><td th:text="${songInfo.features.onKey}"></td></tr>
-        <tr><td>Loudness</td><td th:text="${songInfo.features.loudness}"></td></tr>
-        <tr><td>Speechiness</td><td th:text="${songInfo.features.speechiness}"></td></tr>
-        <tr><td>Acousticness</td><td th:text="${songInfo.features.acousticness}"></td></tr>
-        <tr><td>Instrumentalness</td><td th:text="${songInfo.features.instrumentalness}"></td></tr>
-        <tr><td>Liveness</td><td th:text="${songInfo.features.liveness}"></td></tr>
-        <tr><td>Valence</td><td th:text="${songInfo.features.valence}"></td></tr>
-        <tr><td>Tempo</td><td th:text="${songInfo.features.tempo}"></td></tr>
-        <tr><td>Duration (ms)</td><td th:text="${songInfo.features.duration_ms}"></td></tr>
-    </table>
-    <h3>Lyrics</h3>
-    <div>
-        <span style="white-space: pre-line" th:text="${songInfo.lyrics.lyrics}"></span>
-    </div>
-</div>
+<h1>Here is the log page</h1>
 
 <script th:inline="javascript">
     /*<![CDATA[*/

@@ -1,6 +1,6 @@
 package dsdb.logger.Controller;
 
-import dsdb.logger.Model.Song;
+import dsdb.logger.Model.SongInfo;
 import dsdb.logger.Repository.SongRepository;
 import dsdb.logger.Service.KafkaService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +11,7 @@ import java.util.List;
 
 @RequestMapping("/logger")
 @RestController
-public class SongController {
+public class SongInfoController {
 
     @Autowired
     KafkaService kafkaService;
@@ -20,7 +20,7 @@ public class SongController {
     SongRepository songRepository;
 
     @RequestMapping("/songs")
-    public List<Song> getAllSongs() {
+    public List<SongInfo> getAllSongs() {
         return songRepository.findAll();
     }
 }

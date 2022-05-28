@@ -1,0 +1,22 @@
+# Server port
+server:
+  port: 8000
+# Application Name.
+spring:
+  application:
+    name: DSDB-FrontEnd
+# Redis
+  cache:
+    type: redis
+    #cache-names: users
+    redis:
+      time-to-live: 60000 #ms
+  redis:
+    host: localhost
+    port: 6379
+# Eureka Information
+eureka:
+  client:
+    service-url:
+      default-zone: http://localhost:8761/eureka
+

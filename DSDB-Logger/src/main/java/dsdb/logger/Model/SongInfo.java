@@ -8,7 +8,7 @@ import java.util.Date;
 
 @Data
 @Document(collection = "songs")
-public class Song implements Serializable {
+public class SongInfo implements Serializable {
     private int songId;
     private String title;
     private String artist;

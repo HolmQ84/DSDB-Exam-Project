@@ -17,24 +17,16 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
             <a class="navbar-brand" href="/">DS/DB Exam project</a>
-            <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
-                <li class="nav-item">
-                    <a class="nav-link" href="/login">Login Page</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/music">Top 100 List</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Yet another link</a>
-                </li>
+            <ul class="navbar-nav mr-auto mt-2 mt-lg-0" id="link_list">
+
             </ul>
             <div>
-            <span th:if="${user.username}" style="color: lightblue">Logged In As
-                <span style="color: dodgerblue;font-weight: bold" th:text="' '+${user.username}"></span>
+            <span th:if="${userInfo.username}" style="color: lightblue">Logged In As
+                <span style="color: dodgerblue;font-weight: bold" th:text="' '+${userInfo.username}"></span>
                 <span><a class="btn btn btn-outline-danger my-2 my-sm-0" type="submit" th:href="@{/logout}">Logout</a></span>
             </span>
-                <span th:unless="${user.username}">
-                <form class="form-inline my-2 my-lg-0" method="post" th:action="@{/login}" th:object="${user}">
+                <span th:unless="${userInfo.username}">
+                <form class="form-inline my-2 my-lg-0" method="post" th:action="@{/login}" th:object="${userInfo}">
                     <input class="form-control mr-sm-2" type="text" placeholder="Username" name="username">
                     <input class="form-control mr-sm-2" type="password" placeholder="Password" name="password">
                     <button class="btn btn btn-outline-primary my-2 my-sm-0" type="submit">Login</button>

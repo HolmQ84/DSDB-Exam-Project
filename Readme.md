@@ -184,6 +184,37 @@ Here the database returns the lyric which corresponds to the id's inserted in ou
 The above query is used in our logging service, to find a specific call to our database. In this example, we are searching for 
 all the "reads" from the database between 20th of May 2022 and the 26th of May 2022.
 
+
+Furthermore, in the future we want to get some statistics on the use of our webpage. To do this, we want to be able to present to the administrators
+how much time our users have been spending on our page.
+We do this by using MongoDb's aggregate function, alongside matching it with a $match, $gte and $lt, to be able to determine 
+what time frame this should be presented for. The code snippet shown below are showing how this is done.
+
+      db.log.aggregate([
+         {
+            $match: {
+               'start': {
+                  $gte: ISODate('2022-05-24'), $lt: ISODate('2022-05-30')
+               }
+            }
+         },
+         {
+            $set: {
+               Duration: {
+                  $dateToString: {
+                     date: {
+                        $dateFromParts: {
+                           year: 1970,
+                           millisecond: { $subtract: [ "$end", "$start" ] }
+                        }
+                     },
+                     format: "%H:%M:%S"
+                  }
+               }
+            }
+         }
+      ]);
+
 ***
 
 ### Neo4j

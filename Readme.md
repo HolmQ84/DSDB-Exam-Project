@@ -184,6 +184,39 @@ Here the database returns the lyric which corresponds to the id's inserted in ou
 The above query is used in our logging service, to find a specific call to our database. In this example, we are searching for 
 all the "reads" from the database between 20th of May 2022 and the 26th of May 2022.
 
+
+Furthermore, in the future we want to get some statistics on the use of our webpage. To do this, we want to be able to present to the administrators
+how much time our users have been spending on our page.
+We do this by using MongoDb's aggregate function, alongside matching it with a $match, $gte and $lt, to be able to determine 
+what time frame this should be presented for. The code snippet shown below are showing how this is done.
+
+      db.log.aggregate([
+         {
+            $match: {
+               'start': {
+                  $gte: ISODate('2022-05-24'), $lt: ISODate('2022-05-30')
+               }
+            }
+         },
+         {
+            $set: {
+               Duration: {
+                  $dateToString: {
+                     date: {
+                        $dateFromParts: {
+                           year: 1970,
+                           millisecond: { $subtract: [ "$end", "$start" ] }
+                        }
+                     },
+                     format: "%H:%M:%S"
+                  }
+               }
+            }
+         }
+      ]);
+
+***
+
 ### Neo4j
 First thing first, we have to populate our database. This is done by our web scraper to scrape web page "https://genius.com" for information
 about the songs and collaborators on the songs. here we get writers, producers and featuring artists.
@@ -287,7 +320,179 @@ By using the "Triangle" graph projection, we can also see who is in the triangle
 
 As shown by the triangleCount, "Boef" has the most triangle connections. Hereafter we can see with whom.
 
+***
 
 ### Redis
 
+***
+
 ### PostgreSQL
+
+We want to demonstrate later on how indexing can help speed up the search for a specific user in our PostgreSQL database,
+so first off, we want to populate our PostgreSQL with users.
+
+
+    INSERT INTO person (first_name, last_name, gender) VALUES
+    ('Florrie','Wilson','Female'),
+    ('Oscar','Fowler','Male'),
+    ('Ada','Parker','Female'),
+    ('Agata','Richards','Female'),
+    ...
+    ...
+    ... );
+
+
+We want to add a birthdate to each person in our table. To do this, we build a function that runs a loop on the 200 inserted 
+users in our database. Here we give each user a birthdate, and an age corresponding to the date of birth.
+
+    do $$
+    begin
+        for counter in 1..200 LOOP
+        UPDATE person SET birth_date = (timestamp '1922-01-10' + random() * (timestamp '2022-01-01' - timestamp '1922-01-01'))::DATE WHERE person_id = counter;
+        UPDATE person p SET age = (current_date - CAST(p.birth_date AS date))/365;
+    end loop;
+    end; $$
+
+We do not feel that we are able to show the potential of indexing our users with only 200 entries in our database, this is why we 
+now want to create additional 20000 users by randomly selecting first_names of the already existing users in our database, and mixing them
+with random last_names of our users.
+
+Firstly we get the first_name.
+
+    CREATE OR REPLACE FUNCTION randomFirstnameFromList()
+    RETURNS TEXT AS
+    $$
+        SELECT first_name FROM person ORDER BY random();
+    $$
+    LANGUAGE 'sql'
+    VOLATILE;
+
+Then creating a function to get a random last_name.
+
+    CREATE OR REPLACE FUNCTION randomLastnameFromList()
+    RETURNS TEXT AS
+    $$
+        SELECT last_name FROM person ORDER BY random();
+    $$
+    LANGUAGE 'sql'
+    VOLATILE;
+
+Naturally we also need to add birthdays to the new users.
+
+    CREATE OR REPLACE FUNCTION randomDate()
+    RETURNS DATE AS
+    $$
+        SELECT (timestamp '1922-01-10' + random() * (timestamp '2022-01-01' - timestamp '1922-01-01'))::DATE;
+    $$
+    LANGUAGE 'sql'
+    VOLATILE;
+
+Then we add the new users to our already existing database with people.
+
+    DO
+    $$
+    BEGIN
+        FOR counter IN 1..20000
+        LOOP
+        INSERT INTO person (firstname, lastname, birthdate) VALUES (randomFirstnameFromList(), randomLastnameFromList(), randomDate());
+    END LOOP;
+    END;
+    $$
+
+#### Log directly in PostgreSQL
+
+We are creating a trigger which will be activated everytime a user is updated in our database.
+
+First we are creating a new table called "logs", and we are making a timestamp on the giving time a user is updated.
+
+    CREATE TABLE logs (
+    person_id integer,
+    old_firstname varchar(50),
+    old_lastname varchar(50),
+    LOGGED_at timestamp DEFAULT current_timestamp);
+
+Then we create the function to be triggered when an update is made.
+
+    CREATE OR REPLACE FUNCTION log_event() RETURNS TRIGGER AS $$
+    DECLARE
+    BEGIN
+        INSERT INTO logs (person_id, old_firstname, old_lastname)
+        VALUES (OLD.person_id, OLD.firstname, OLD.lastname);
+    RAISE NOTICE 'Someone just changed person #%', OLD.person_id;
+    RETURN NEW;
+    END;
+    $$ LANGUAGE plpgsql;
+
+Lastly we create the trigger that is to be run on a given event. In this case "UPDATE".
+
+    CREATE TRIGGER log_event 
+    AFTER UPDATE ON person
+    FOR EACH ROW EXECUTE PROCEDURE log_event();
+
+If we take a look at our person table, we can see a person with an id 201. We want to update the lastname of the person
+to "Simonsen".
+
+![img.png](images/Person_to_be_updated.png)
+
+
+When running the following query, we should automatically insert a new entry into our log table.
+
+    UPDATE person 
+    SET lastname ='Simonsen'
+    WHERE person_id  = 201;
+
+
+we get the following output from Dbeaver.
+
+![img.png](images/Someone_just_updated_a_person.png)
+
+We can see that the log has inserted the old name of our user with person_id 201
+
+![img.png](images/old_name_from_log.png)
+
+and if we call the user on our person table, we can see that this has been changed.
+
+![img.png](images/name_after_update.png)
+
+
+
+#### Creating index in PostgreSQl
+
+Creating an index
+
+    CREATE INDEX users_id_index ON users (user_id);
+
+Fetching all users with indexing (Åben billede "AfterIndexing" hvis utydeligt)
+![](src/main/resources/Images/AfterIndexing.png)
+
+## Technical breakdown
+
+An Index is the structure or object by which we can retrieve specific rows or data faster. Indexes can be created using one or multiple columns or by using the partial data depending on your query requirement conditions.
+
+
+PostgreSQL server provides following types of indexes, which each uses a different algorithm:
+
+* B-tree
+* Hash
+* GiST
+* SP-GiST
+* GIN
+* BRIN
+
+By **default** a **B-tree** index will get created.
+
+1. B-tree index
+   The most common and widely used index type is the B-tree index. This is the default index type for the CREATE INDEX command, unless you explicitly mention the type during index creation.
+
+
+    CREATE INDEX <index_name> ON <table_name> (<column_name>);
+
+2. Hash index
+   The Hash index can be used only if the equality condition = is being used in the query.
+
+
+    CREATE INDEX <index_name> ON <table_name> using HASH (<column_name>);
+    select * from public."Track" where "Name"='Princess of the Dawn';
+
+
+

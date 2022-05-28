@@ -8,7 +8,7 @@ spring:
     mongodb:
       host: localhost
       port: 27017
-      database: logger
+      database: music
   main:
     allow-bean-definition-overriding: true
 

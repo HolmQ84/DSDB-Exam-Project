@@ -21,4 +21,8 @@ public class LoggingService {
         return loggerRepository.getTimeLog();
     }
 
+    public List<LoggerInfo> getAll(){
+        return loggerRepository.findAll();
+    }
+
 }

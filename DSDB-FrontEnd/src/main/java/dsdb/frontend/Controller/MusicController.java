@@ -36,23 +36,31 @@ public class MusicController {
     KafkaService kafkaService;
 
     @GetMapping("/region/{region}")
-    public List<Song> getSongsByRegion(@PathVariable String region, HttpSession session, HttpServletResponse response) {
+    public ModelAndView getSongsByRegion(@PathVariable String region, HttpSession session, HttpServletResponse response) {
         sessionService.sessionCheck(session, response);
-        sessionService.updateSession(session, response, "getSongsByRegion", region);
-        return musicClient.getTop10RankedSongsByRegion(region);
+        sessionService.updateSession(session, response, "/music/region/{region}", region);
+        List<Song> songs = musicClient.getTop10RankedSongsByRegion(region);
+        ModelAndView modelAndView = new ModelAndView("songs");
+        modelAndView.addObject("songs", songs);
+        modelAndView.addObject("user", (User) session.getAttribute("user"));
+        return modelAndView;
     }
 
     @GetMapping("/artist/{artist}")
-    public List<Song> getSongsByArtistLike(@PathVariable String artist, HttpSession session, HttpServletResponse response) {
+    public ModelAndView getSongsByArtistLike(@PathVariable String artist, HttpSession session, HttpServletResponse response) {
         sessionService.sessionCheck(session, response);
-        sessionService.updateSession(session, response, "getSongsByArtistLike", artist);
-        return musicClient.getSongsByArtistLike(artist);
+        sessionService.updateSession(session, response, "/music/artist/{artist}", artist);
+        List<Song> songs = musicClient.getSongsByArtistLike(artist);
+        ModelAndView modelAndView = new ModelAndView("songs");
+        modelAndView.addObject("songs", songs);
+        modelAndView.addObject("user", (User) session.getAttribute("user"));
+        return modelAndView;
     }
 
     @GetMapping("/{id}")
     public ModelAndView getSongById(@PathVariable int id, HttpSession session, HttpServletResponse response) {
         sessionService.sessionCheck(session, response);
-        sessionService.updateSession(session, response, "getSongById", Integer.toString(id));
+        sessionService.updateSession(session, response, "/music/{id}", Integer.toString(id));
         Song song = musicClient.getSongById(id);
         if (song != null) {
             try {
@@ -73,7 +81,7 @@ public class MusicController {
     @GetMapping()
     public ModelAndView getAllSongsLimitedTo100(HttpSession session, HttpServletResponse response) {
         sessionService.sessionCheck(session, response);
-        sessionService.updateSession(session, response, "getAllSongsLimitedTo100", null);
+        sessionService.updateSession(session, response, "/music/", null);
         List<Song> songs = musicClient.getAllSongs().stream().limit(100).collect(Collectors.toList());
         ModelAndView modelAndView = new ModelAndView("songs");
         modelAndView.addObject("songs", songs);

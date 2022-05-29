@@ -4,8 +4,7 @@ import dsdb.frontend.Model.LogInfoDTO;
 import dsdb.frontend.Model.Session;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 @Service
@@ -29,8 +28,10 @@ public class LogInfoService {
                 }
             }
         }
+        logInfoDTO.numberOfVisitors = sessionList.size();
         logInfoDTO.avgPages = (logInfoDTO.avgPages/sessionList.size());
         logInfoDTO.avgTime = (logInfoDTO.avgTime/sessionList.size());
+        logInfoDTO.mostVisitedPage = Collections.max(logInfoDTO.pages.entrySet(), Comparator.comparingInt(Map.Entry::getValue)).getKey();
         return logInfoDTO;
     }
 

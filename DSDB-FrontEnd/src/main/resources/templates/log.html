@@ -44,6 +44,31 @@
 <div class="container logContainer">
     <table class="table table-bordered">
         <tr>
+            <td>Total number of visitors</td><td th:text="${logInfo.numberOfVisitors}"></td>
+        </tr>
+        <tr>
+            <td>Most visited page</td><td th:text="${logInfo.mostVisitedPage}"></td>
+        </tr>
+        <tr>
+            <td>Average number of pages per visitor</td><td th:text="${logInfo.avgPages} + ' pages'"></td>
+        </tr>
+        <tr>
+            <td>Average time spend on site</td><td th:text="${logInfo.avgTime} + ' seconds'"></td>
+        </tr>
+    </table>
+</div>
+
+<div class="container logContainer center" id="chart1">
+
+</div>
+
+<div class="container logContainer center" id="chart2">
+
+</div>
+
+<div class="container logContainer">
+    <table class="table table-bordered">
+        <tr>
             <th>Session ID</th>
             <th>User ID</th>
             <th>Pages Visited</th>
@@ -83,6 +108,111 @@
             '   <a class="nav-link" href="/music">Top 100 List</a>\n' +
             '</li>'
         )
+    }
+
+
+    for (let i = 0;i < Object.keys(visitTimeOfDay).length; i++) {
+        console.log(Object.keys(visitTimeOfDay)[i])
+        console.log(visitTimeOfDay[Object.keys(visitTimeOfDay)[i]])
+    }
+    /*]]>*/
+</script>
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script type="text/javascript"  th:inline="javascript">
+    /*<![CDATA[*/
+    google.charts.load("current", {packages:['corechart']});
+    google.charts.setOnLoadCallback(drawChart);
+
+    const pages = /*[[${logInfo.pages}]]*/ 'default';
+    const key_d = Object.keys(pages)[0]
+    const value_d = parseInt(pages[Object.keys(pages)[0]])
+
+    console.log(key_d)
+    console.log(value_d)
+
+    function drawChart() {
+        let data = google.visualization.arrayToDataTable([
+            ["Page", "Number of visits", { role: "style" } ],
+            [Object.keys(pages)[0], parseInt(pages[Object.keys(pages)[0]]), "#11ab14"],
+            [Object.keys(pages)[1], parseInt(pages[Object.keys(pages)[1]]), "#cb740f"],
+            [Object.keys(pages)[2], parseInt(pages[Object.keys(pages)[2]]), "#174396"],
+            [Object.keys(pages)[3], parseInt(pages[Object.keys(pages)[3]]), "#96174c"],
+            [Object.keys(pages)[4], parseInt(pages[Object.keys(pages)[4]]), "#d2b00f"],
+            [Object.keys(pages)[5], parseInt(pages[Object.keys(pages)[5]]), "#d2b00f"],
+            [Object.keys(pages)[6], parseInt(pages[Object.keys(pages)[6]]), "#d2b00f"],
+            [Object.keys(pages)[7], parseInt(pages[Object.keys(pages)[7]]), "#d2b00f"]
+        ]);
+
+        var view = new google.visualization.DataView(data);
+        view.setColumns([0, 1,
+            { calc: "stringify",
+                sourceColumn: 1,
+                type: "string",
+                role: "annotation" },
+            2]);
+
+        var options = {
+            title: "Overview of most visited pages",
+            width: 1000,
+            height: 400,
+            bar: {groupWidth: "95%"},
+            legend: { position: "none" },
+        };
+        var chart = new google.visualization.ColumnChart(document.getElementById("chart1"));
+        chart.draw(view, options);
+    }
+
+    google.charts.load("current2", {packages:['corechart']});
+    google.charts.setOnLoadCallback(drawChart2);
+
+    const visitTimeOfDay = /*[[${logInfo.visitTimeOfDay}]]*/ 'default';
+
+    function drawChart2() {
+        let data = google.visualization.arrayToDataTable([
+            ["Page", "Number of visits", { role: "style" } ],
+            [1, visitTimeOfDay[1], "#00ffbc"],
+            [2, visitTimeOfDay[2], "#0db98c"],
+            [3, visitTimeOfDay[3], "#0d8d6c"],
+            [4, visitTimeOfDay[4], "#0c6750"],
+            [5, visitTimeOfDay[5], "#285dbd"],
+            [6, visitTimeOfDay[6], "#1851b7"],
+            [7, visitTimeOfDay[7], "#0e55d5"],
+            [8, visitTimeOfDay[8], "#3b7aee"],
+            [9, visitTimeOfDay[9], "#dab1c2"],
+            [10, visitTimeOfDay[10], "#d080a1"],
+            [11, visitTimeOfDay[11], "#e75e96"],
+            [12, visitTimeOfDay[12], "#e32673"],
+            [13, visitTimeOfDay[13], "#965b17"],
+            [14, visitTimeOfDay[14], "#937d16"],
+            [15, visitTimeOfDay[15], "#dab817"],
+            [16, visitTimeOfDay[16], "#d5bb3f"],
+            [17, visitTimeOfDay[17], "#cbba69"],
+            [18, visitTimeOfDay[18], "#b0a674"],
+            [19, visitTimeOfDay[19], "#72af73"],
+            [20, visitTimeOfDay[20], "#4accab"],
+            [21, visitTimeOfDay[21], "#22d0a2"],
+            [22, visitTimeOfDay[22], "#119f7a"],
+            [23, visitTimeOfDay[23], "#0a624b"],
+            [0, visitTimeOfDay[0], "#0d7258"]
+        ]);
+
+        var view = new google.visualization.DataView(data);
+        view.setColumns([0, 1,
+            { calc: "stringify",
+                sourceColumn: 1,
+                type: "string",
+                role: "annotation" },
+            2]);
+
+        var options = {
+            title: "Overview of day of time visitors",
+            width: 1000,
+            height: 400,
+            bar: {groupWidth: "95%"},
+            legend: { position: "none" },
+        };
+        var chart = new google.visualization.ColumnChart(document.getElementById("chart2"));
+        chart.draw(view, options);
     }
     /*]]>*/
 </script>

@@ -54,7 +54,7 @@ public class LoginController {
         ModelAndView modelAndView = new ModelAndView("index");
         modelAndView.addObject("user", (User) session.getAttribute("user"));
         if (session.getAttribute("session") != null) {
-            sessionService.updateSession(session, response, "Index Page", null);
+            sessionService.updateSession(session, response, "/", null);
         }
         return modelAndView;
     }

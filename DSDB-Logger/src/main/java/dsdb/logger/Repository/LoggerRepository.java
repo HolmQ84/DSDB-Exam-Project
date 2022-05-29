@@ -18,7 +18,6 @@ public interface LoggerRepository extends MongoRepository<LoggerInfo, Integer> {
     List<LoggerInfo> getTimeLog();
 
 
-
     String qureyForGettingTime = "{\n" +
             "        $match: {\n" +
             "           'start': {\n" +

@@ -2,7 +2,7 @@ package dsdb.logger.Service;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import dsdb.logger.Model.AudioFeaturesInfo;
+import dsdb.logger.Model.FeaturesInfo;
 import dsdb.logger.Model.SessionInfo;
 import dsdb.logger.Model.SongInfo;
 import dsdb.logger.Model.UserInfo;
@@ -61,7 +61,7 @@ public class KafkaService {
     @KafkaListener(topics = "features", groupId = "DSDB-Logger")
     public void featureLoggerListener(String message) {
         try {
-            AudioFeaturesInfo features = new Gson().fromJson(message, AudioFeaturesInfo.class);
+            FeaturesInfo features = new Gson().fromJson(message, FeaturesInfo.class);
             logger.info("Features added to logfile - message: " + features.getLoggerMessage());
             featureRepository.save(features);
         } catch (Exception e) {

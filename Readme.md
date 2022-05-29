@@ -190,11 +190,14 @@ how much time our users have been spending on our page.
 We do this by using MongoDb's aggregate function, alongside matching it with a $match, $gte and $lt, to be able to determine 
 what time frame this should be presented for. The code snippet shown below are showing how this is done.
 
+      var start = "2022-xx-xx"
+      var end = "2022-xx-xx"
+      
       db.log.aggregate([
          {
             $match: {
                'start': {
-                  $gte: ISODate('2022-05-24'), $lt: ISODate('2022-05-30')
+                  $gte: ISODate(start), $lt: ISODate(end)
                }
             }
          },

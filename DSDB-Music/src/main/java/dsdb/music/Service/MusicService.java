@@ -26,6 +26,12 @@ public class MusicService {
     @Autowired
     MusicRepository musicRepository;
 
+    public void deleteOne(Song song){
+        Song song1 = new Song(1 , "Chantaje (feat. Maluma)");
+        musicRepository.delete(song);
+    }
+
+
     public List<Song> convertCSVtoListOfMusic() {
         try{
             CSVReader reader=

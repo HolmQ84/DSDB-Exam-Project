@@ -4,12 +4,10 @@ import dsdb.music.Model.Song;
 import dsdb.music.Service.KafkaService;
 import dsdb.music.Service.MusicService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RequestMapping("/songs")
 @RestController
@@ -43,6 +41,8 @@ public class SongController {
     public List<Song> getTop10SongsByRegion(@PathVariable String region) {
         return musicService.getTop10SongsByRegion(region);
     }
+
+
 
     @GetMapping("/filldb")
     public String musicToDB() {

@@ -26,10 +26,16 @@ public class MusicService {
     @Autowired
     MusicRepository musicRepository;
 
+    public void deleteOne(Song song){
+        Song song1 = new Song(1 , "Chantaje (feat. Maluma)");
+        musicRepository.delete(song);
+    }
+
+
     public List<Song> convertCSVtoListOfMusic() {
         try{
             CSVReader reader=
-                    new CSVReaderBuilder(new FileReader("C:\\Users\\marti\\IdeaProjects\\DataScience-ExamProject\\DataScience-SongManagement\\data\\cleanedDatasetWithFeatures.csv")).
+                    new CSVReaderBuilder(new FileReader("C:\\Users\\patr5\\IdeaProjects\\DataScience-ExamProject\\DataScience-SongManagement\\data\\cleanedDatasetWithFeatures.csv")).
                             withSkipLines(1). // Skiping firstline as it is header
                             build();
             List<Song> songList = reader.readAll().stream().map(data-> {

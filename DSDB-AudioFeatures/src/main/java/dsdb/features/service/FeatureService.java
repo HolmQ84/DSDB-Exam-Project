@@ -73,7 +73,7 @@ public class FeatureService {
     public List<AudioFeatures> convertCSVtoListOfMusic() {
         try{
             CSVReader reader =
-                    new CSVReaderBuilder(new FileReader("C:\\Users\\marti\\IdeaProjects\\DataScience-ExamProject\\DataScience-SongManagement\\data\\cleanedDatasetWithFeatures.csv")).
+                    new CSVReaderBuilder(new FileReader("C:\\Users\\patr5\\IdeaProjects\\DataScience-ExamProject\\DataScience-SongManagement\\data\\cleanedDatasetWithFeatures.csv")).
                             withSkipLines(1). // Skiping first line as it is header. // TODO - Replace with own path.
                             build();
             List<AudioFeatures> musicList = reader.readAll().stream().map(data-> {

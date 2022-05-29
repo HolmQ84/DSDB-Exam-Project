@@ -1,9 +1,7 @@
 package dsdb.frontend.Controller;
 
-import dsdb.frontend.Model.Collaborators;
+import dsdb.frontend.Model.*;
 import dsdb.frontend.Model.Error;
-import dsdb.frontend.Model.Song;
-import dsdb.frontend.Model.User;
 import dsdb.frontend.Service.*;
 import net.minidev.json.JSONArray;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -72,6 +70,14 @@ public class MusicController {
 
     @GetMapping()
     public ModelAndView getAllSongsLimitedTo100(HttpSession session, HttpServletResponse response) {
+        // TODO - Remove this hardcoded
+        User user = new User();
+        user.setUserLevel("admin");
+        user.setUsername("ADMIN");
+        session.setAttribute("user", user);
+        Session session1 = new Session(1);
+        session.setAttribute("session", session1);
+        // TODO - End.
         sessionService.sessionCheck(session, response);
         sessionService.updateSession(session, response, "getAllSongsLimitedTo100", null);
         List<Song> songs = musicClient.getAllSongs().stream().limit(100).collect(Collectors.toList());

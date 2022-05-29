@@ -17,6 +17,7 @@ public class CollaboratorClient {
     @Autowired
     RestTemplate restTemplate;
 
+
     public Collaborators getSongCollaborators() {
         HttpHeaders headers = new HttpHeaders();
         headers.setAccept(List.of(MediaType.APPLICATION_JSON));

@@ -2,17 +2,26 @@ package dsdb.frontend.Model;
 
 import lombok.Data;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 @Data
-public class Session {
+public class Session implements Serializable {
     public int sessionId;
     public int userId;
     public List<String> pagesVisited = new ArrayList<>();
     public Date startTime;
     public Date endTime;
+
+    public Session(int sessionId, int userId, List<String> pagesVisited, Date startTime, Date endTime) {
+        this.sessionId = sessionId;
+        this.userId = userId;
+        this.pagesVisited = pagesVisited;
+        this.startTime = startTime;
+        this.endTime = endTime;
+    }
 
     public Session(int userId) {
         this.userId = userId;
@@ -37,6 +46,10 @@ public class Session {
 
     public List<String> getPagesVisited() {
         return pagesVisited;
+    }
+
+    public void setPagesVisited(List<String> pagesVisited) {
+        this.pagesVisited = pagesVisited;
     }
 
     public void addPagesVisited(String page) {

@@ -31,8 +31,8 @@
             <artifactId>spring-boot-starter-web-services</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.springframework.sessionInfo</groupId>
-            <artifactId>spring-sessionInfo-core</artifactId>
+            <groupId>org.springframework.session</groupId>
+            <artifactId>spring-session-core</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>

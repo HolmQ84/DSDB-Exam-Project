@@ -1,7 +1,7 @@
 spring:
   # Postgres
   datasource:
-    url: jdbc:postgresql://localhost:5432/postgres?currentSchema=features
+    url: jdbc:postgresql://localhost:5432/postgres?currentSchema=music
     username: test1234
     password: test1234
   # JPA & Hibernate

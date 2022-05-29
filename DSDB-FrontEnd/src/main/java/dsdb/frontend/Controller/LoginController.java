@@ -52,7 +52,7 @@ public class LoginController {
     public ModelAndView index(HttpSession session, HttpServletResponse response) {
         sessionService.sessionCheck(session, response);
         ModelAndView modelAndView = new ModelAndView("index");
-        modelAndView.addObject("user", session.getAttribute("user"));
+        modelAndView.addObject("user", (User) session.getAttribute("user"));
         if (session.getAttribute("session") != null) {
             sessionService.updateSession(session, response, "Index Page", null);
         }

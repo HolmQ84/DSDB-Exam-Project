@@ -9,6 +9,37 @@
 
 ## Table of Contents
 
+- [Introduction to our solution](#introduction-to-our-solution)
+- [Application domain](#application-domain)
+    * [Use Case Diagram](#use-case-diagram)
+    * [UC3: See Audio Features - Fully Dressed](#uc3--see-audio-features---fully-dressed)
+    * [Functional- & non-functional requirements](#functional----non-functional-requirements)
+        + [Functional requirements](#functional-requirements)
+        + [Non-functional requirements](#non-functional-requirements)
+- [Static Architecture diagram](#static-architecture-diagram)
+    * [Kafka](#kafka)
+- [Overview of the different services:](#overview-of-the-different-services-)
+- [Chosen technologies](#chosen-technologies)
+- [Chosen databases](#chosen-databases)
+- [Micro Services](#micro-services)
+    + [DSDB-Users](#dsdb-users)
+    + [DSDB-Music](#dsdb-music)
+    + [DSDB-AudioFeatures](#dsdb-audiofeatures)
+    + [DSDB-Lyrics](#dsdb-lyrics)
+    + [DSDB-Collaborators](#dsdb-collaborators)
+    + [DSDB-Logger](#dsdb-logger)
+    + [DSDB-Gateway](#dsdb-gateway)
+    + [DSDB-FrontEnd](#dsdb-frontend)
+    + [DSDB-EurekaServer](#dsdb-eurekaserver)
+- [Database queries](#database-queries)
+    * [MongoDB](#mongodb)
+    * [Neo4j](#neo4j)
+    * [Redis](#redis)
+    * [PostgreSQL](#postgresql)
+        + [Log directly in PostgreSQL](#log-directly-in-postgresql)
+        + [Creating index in PostgreSQl](#creating-index-in-postgresql)
+- [Technical breakdown](#technical-breakdown)
+
 ## Introduction to our solution
 
 Our project is revolving around music.\
@@ -31,6 +62,94 @@ and make them work together in a single frontend application.
 
 Our Application is built of Micro Services, which is set up to be registered with a Eureka Server.\
 Through the Eureka Server, our API Gateway stores the information about the different endpoints of the Micro Services - and our frontend application uses the API Gateway to serve the data in a single web application.
+
+## Application domain
+
+### Use Case Diagram
+
+Here we are showing an overview of the use cases we have implemented and plan to implement in our program.
+
+The use-case diagram contains 3 actors and illustrate each actors use-cases. As it shows, in order to do anything in this program, you will need to be signed in.
+
+![img.png](img.png)
+
+
+### UC3: See Audio Features - Fully Dressed
+
+**Level**\
+User goal
+
+**Primary Actor**\
+User
+
+**Stakeholders and Interests**\
+User: Must be able to see audio features for a given song.
+
+**Preconditions**\
+User is identified and authenticated.
+
+**Postconditions**\
+Audio Features are displayed to the user with information on Acousticness,  Energy,  Instrumentalness,  Liveness, Loudness, Speechiness, Tempo, Valence.
+
+
+| Id | Main Success Scenario                                                                                                            |
+|----|--------------------------------------------------------------------------------------------------------------------------|
+| 1. |  User clicks on “login”.                                                                                                 |
+| 2. | SYSTEM Navigates to page for login form.                                                                                 |
+| 3. | User writes login informations.                                                                                          |
+| 4. | SYSTEM Validates login form data.                                                                                        |
+| 5. | SYSTEM Redirects user to index.html.                                                                                     |
+| 6. | User clicks on “See Audio Features”.                                                                                     |
+| 7. | SYSTEM Navigates to page for audio features.                                                                             |
+| 8. | User inputs song title.                                                                                                  |
+| 9. | SYSTEM Presents Acousticness,  Energy,  Instrumentalness,  Liveness, Loudness, Speechiness, Tempo, Valence on html page. |
+
+
+**' * '  = at all time**
+
+| Exstensions                                                                                                                                                                                                                                            |
+|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| 2.a Html page not available:  Status 404 is displayed                                                                                                                                                                                                                 |
+| 3.a Wrong Input:  System displays “Wrong password or email”.                                                                                                                                                                                                          |
+| 4.a Service Unavailable:  If the microservice is unavailable a 500 error code is displayed. If the database is unavailable 503 error code is displayed                                                                                                                |
+| 4.b Login information does not match stored users:  System displays “Wrong password or email”.                                                                                                                                                                        |
+| 5.a Html file is not available:  System displays error code 404.                                                                                                                                                                                                      |
+| 7.a Html file is not available:  System displays error code 404.                                                                                                                                                                                                      |
+| 8.a Illegal Input:  System displays the illegal character without queuing the input.                                                                                                                                                                                  |
+| 9.a No Audio Features:  If there are no audio features matching the search criteria, a message must be displayed to the user, that there are no audio features for the given song.. An option to search for a new song must be presented for the user.                |
+| 9.b No Song matching search criteria:  If there are no songs matching the search criteria, a message must be displayed to the user, that there are no matching songs for the given search criteria.. An option to search for a new song must be presented for the user. |
+| 9.c Fetched features cannot be displayed:  If an error occurs when fetching the data, a message must be displayed to the user, describing the given error                                                                                                             |
+| * If the user wants to return to the main page  There should be a visible button, presenting that option for the employee                                                                                                                                             |
+
+**Special Requirements**\
+None
+
+**Frequency of Occurrence**\
+Every time a user wants to see features for a given song's audio features.
+
+
+### Functional- & non-functional requirements
+####Functional
+- A guest should be able to register
+- A guest should be able to login
+- A user should be able to see audio features for a given song
+- A user should be able to see all songs
+- A user should be able to see all lyrics
+
+
+#### Non-functional requirements
+- After making a get request to postgresql, the database should give a response after maximum 1000ms.
+
+- After making a get request to postgresql, the database should give a response after maximum 500ms
+
+- Redis should be available when a request within 60.000ms of the initial request to fetch all songs.
+
+- The system must be easy to learn for both novices and users with experience from similar systems.
+
+- The Mongodb should be available 99% of the year
+
+- After fetching all songs, the second request should arrive withing 2000ms unless 60 second pass from the initial fetch.
+
 
 ### Static Architecture diagram
 
@@ -156,15 +275,6 @@ This means that when a user is creating a password, it will be hashed - and can 
 By this way, we ensure that all users passwords remain a secret.
 
 ***
-## Use Case Diagram
-
-Here we are showing an overview of the use cases we have implemented in our program.
-
-![img.png](img.png)
-
-### Use Cases
-
-
 
 ***
 ## Database queries

@@ -157,8 +157,7 @@ The following image presents a Static Architecture Diagram of our application.\
 The diagram below shows the connection between our services, and how they are managed through the Eureka Server.
 It also serves as an overview of the different Micro Services, and which databases we use for the different Services/Applications.
 
-![StaticArchitectureDiagram.jpg](images/StaticArchitectureDiagram.jpg)
-
+![img_1.png](img_1.png)
 ### Kafka
 
 We are using Kafka for delivering messages to our Logger Service, in order to gather different data for the

@@ -272,7 +272,7 @@ After we've created our projection, we can take a look closer to our data in our
 
     CALL gds.degree.stream('artists')
     YIELD nodeId, score
-    RETURN gds.util.asNode(nodeID).name AS name, score AS collaborators
+    RETURN gds.util.asNode(nodeId).name AS name, score AS collaborators
     ORDER BY collaborators DESC, name DESC
 This tells us who has been collaborator with most different people\
 ![img.png](images/Collaborated%20_out.png)

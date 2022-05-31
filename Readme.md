@@ -98,14 +98,12 @@ Below we list the technologies we are using for this project.
 
 Below we are listing the databases we use in this project.
 
-|  Databases |    Type   |                                                                                                                                 Usage                                                                                                                                | 
+|  Databases |    Genre   |                                                                                                                                 Usage                                                                                                                                | 
 |:----------:|:---------:|:--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------:|
 |   MongoDB  |  Document |                                             We use MongoDB to store Lyrics our songs, and the artist preforming the songInfo. besides that we use mongo to  store our log files, which can be accessed by the administrator.                                             | 
-| PostgreSQL |    RDB    |                                                                                                       In PostgreSQL we are storing our users and the userInfo data.                                                                                                      | 
-|    Redis   | in-memory |                                                                                           Redis is used as a cache calls to the database on top of our client application.                                                                                           |  
-|    Neo4J   |   Graph   |                                      Neo4j is containing nodes with track name, with various relationships to the writers, producers, artists nodes.  These relationships is called [SANG], [COLLABORATED], [WROTE] and [FEATURED]                                     |  
-|    MySQL   |    RDB    | MySQL is containing the audio features that matches the tracks. these features are Longs, which are the different attributes on  the songInfo, "Acousticness", "Dancability", "Energy", "Instrumentalness", "Liveness", "Loudness", "Speechiness", "Valance" and "Tempo" |  
-
+| PostgreSQL |Relational |                                                                                                       In PostgreSQL we are storing our users and the userInfo data. We are also using it to store Audio Features for the songs.                                                                                                     | 
+|    Redis   | Key/Value |                                                                                           Redis is used as a cache calls to the database on top of our client application.                                                                                           |  
+|    Neo4J   |   Graph   |                                      Neo4j is containing nodes with track name, with various relationships to the writers, producers, artists nodes.  These relationships is called [SANG], [COLLABORATED], [WROTE] and [FEATURED]                                     |
 
 <br>
 <br>
@@ -123,7 +121,7 @@ Below we are listing the databases we use in this project.
 - The DSDB-Music service is managing all calls to the MongoDB regarding the Track and artists related to the specific songInfo.
 
 #### DSDB-AudioFeatures
-- Here we are managing all transactions happening to and from the MySql database which contains all the Audio features.
+- Here we are managing all transactions happening to and from the Postgres database table 'features', which contains all the Audio features.
 
 #### DSDB-Lyrics
 - As the name implies, the DSDB-Lyric is responsible for handling the transactions we are running to get the lyrics of the songs.
@@ -154,11 +152,18 @@ As shown above, we can access this information from our Eureka server, by going 
 Bcrypt is a password-hashing function based on the blowfish algorithm.
 
 We are using this library to secure the passwords of our users, by making a one way hashing on the passwords.\
-This means that when a userInfo is creating a password, it will be hashed - and can never be 'unhashed' again.\
+This means that when a user is creating a password, it will be hashed - and can never be 'unhashed' again.\
 By this way, we ensure that all users passwords remain a secret.
 
 ***
-## Use Cases
+## Use Case Diagram
+
+Here we are showing an overview of the use cases we have implemented in our program.
+
+![img.png](img.png)
+
+### Use Cases
+
 
 
 ***

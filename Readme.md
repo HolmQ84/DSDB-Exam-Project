@@ -7,6 +7,8 @@
 
 # LINK TO VIDEO
 
+https://youtu.be/tYSG0XH1tDw
+
 ## Table of Contents
 
 - [Introduction to our solution](#introduction-to-our-solution)
